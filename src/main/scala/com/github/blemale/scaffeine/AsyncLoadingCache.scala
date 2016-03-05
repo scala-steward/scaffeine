@@ -2,20 +2,19 @@ package com.github.blemale.scaffeine
 
 import java.util.concurrent.Executor
 
-import com.github.benmanes.caffeine.cache.AsyncLoadingCache
+import com.github.benmanes.caffeine.cache.{AsyncLoadingCache => CaffeineAsyncLoadingCache}
 
 import scala.collection.JavaConverters._
-import scala.compat.java8.FutureConverters._
 import scala.compat.java8.FunctionConverters._
-
+import scala.compat.java8.FutureConverters._
 import scala.concurrent.{ExecutionContext, Future}
 
-object SAsyncLoadingCache {
-  def apply[K, V](asyncLoadingCache: AsyncLoadingCache[K, V]): SAsyncLoadingCache[K, V] =
-    new SAsyncLoadingCache(asyncLoadingCache)
+object AsyncLoadingCache {
+  def apply[K, V](asyncLoadingCache: CaffeineAsyncLoadingCache[K, V]): AsyncLoadingCache[K, V] =
+    new AsyncLoadingCache(asyncLoadingCache)
 }
 
-class SAsyncLoadingCache[K, V](val underlying: AsyncLoadingCache[K, V]) {
+class AsyncLoadingCache[K, V](val underlying: CaffeineAsyncLoadingCache[K, V]) {
 
   def getIfPresent(key: K)(implicit ec: ExecutionContext): Future[V] =
     underlying.getIfPresent(key).toScala
@@ -38,8 +37,8 @@ class SAsyncLoadingCache[K, V](val underlying: AsyncLoadingCache[K, V]) {
   def put(key: K, valueFuture: Future[V])(implicit ec: ExecutionContext): Unit =
     underlying.put(key, valueFuture.toJava.toCompletableFuture)
 
-  def synchronous(): SLoadingCache[K, V] =
-    SLoadingCache(underlying.synchronous())
+  def synchronous(): LoadingCache[K, V] =
+    LoadingCache(underlying.synchronous())
 
-  override def toString = s"SAsyncLoadingCache($underlying)"
+  override def toString = s"AsyncLoadingCache($underlying)"
 }

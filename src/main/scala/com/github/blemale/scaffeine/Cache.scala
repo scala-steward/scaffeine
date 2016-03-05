@@ -1,18 +1,18 @@
 package com.github.blemale.scaffeine
 
-import com.github.benmanes.caffeine.cache.{Policy, Cache}
 import com.github.benmanes.caffeine.cache.stats.CacheStats
+import com.github.benmanes.caffeine.cache.{Cache => CaffeineCache, Policy}
 
 import scala.collection.JavaConverters._
 import scala.compat.java8.FunctionConverters._
 
 
-object SCache {
-  def apply[K, V](cache: Cache[K, V]) =
-    new SCache(cache)
+object Cache {
+  def apply[K, V](cache: CaffeineCache[K, V]) =
+    new Cache(cache)
 }
 
-class SCache[K, V](val underlying: Cache[K, V]) {
+class Cache[K, V](val underlying: CaffeineCache[K, V]) {
 
   def getIfPresent(key: K): Option[V] =
     Option(underlying.getIfPresent(key))
@@ -53,5 +53,5 @@ class SCache[K, V](val underlying: Cache[K, V]) {
   def policy(): Policy[K, V] =
     underlying.policy()
 
-  override def toString = s"SCache($underlying)"
+  override def toString = s"Cache($underlying)"
 }
