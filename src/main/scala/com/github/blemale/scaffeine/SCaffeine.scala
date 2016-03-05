@@ -78,10 +78,10 @@ case class SCaffeine[K, V](underlying: Caffeine[K, V]) {
   def build[K1 <: K, V1 <: V](): SCache[K1, V1] =
     SCache(underlying.build())
 
-  def build[K1 <: K, V1 <: V](loader: K1 => V1): LoadingCache[K1, V1] =
-    underlying.build(new CacheLoader[K1, V1] {
+  def build[K1 <: K, V1 <: V](loader: K1 => V1): SLoadingCache[K1, V1] =
+    SLoadingCache(underlying.build(new CacheLoader[K1, V1] {
       override def load(key: K1): V1 = loader(key)
-    })
+    }))
 
   def buildAsync[K1 <: K, V1 <: V](loader: K1 => V1): AsyncLoadingCache[K1, V1] =
     underlying.buildAsync[K1, V1](new CacheLoader[K1, V1] {
