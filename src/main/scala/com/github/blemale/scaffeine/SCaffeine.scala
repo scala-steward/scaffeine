@@ -75,8 +75,8 @@ case class SCaffeine[K, V](underlying: Caffeine[K, V]) {
   def recordStat[C <: StatsCounter](statsCounterSupplier: () => C) =
     SCaffeine(underlying.recordStats(asJavaSupplier(statsCounterSupplier)))
 
-  def build[K1 <: K, V1 <: V](): Cache[K1, V1] =
-    underlying.build()
+  def build[K1 <: K, V1 <: V](): SCache[K1, V1] =
+    SCache(underlying.build())
 
   def build[K1 <: K, V1 <: V](loader: K1 => V1): LoadingCache[K1, V1] =
     underlying.build(new CacheLoader[K1, V1] {
