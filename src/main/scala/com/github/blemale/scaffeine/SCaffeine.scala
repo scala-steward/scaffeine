@@ -83,14 +83,14 @@ case class SCaffeine[K, V](underlying: Caffeine[K, V]) {
       override def load(key: K1): V1 = loader(key)
     }))
 
-  def buildAsync[K1 <: K, V1 <: V](loader: K1 => V1): AsyncLoadingCache[K1, V1] =
-    underlying.buildAsync[K1, V1](new CacheLoader[K1, V1] {
+  def buildAsync[K1 <: K, V1 <: V](loader: K1 => V1): SAsyncLoadingCache[K1, V1] =
+    SAsyncLoadingCache(underlying.buildAsync[K1, V1](new CacheLoader[K1, V1] {
       override def load(key: K1): V1 = loader(key)
-    })
+    }))
 
-  def buildAsyncFuture[K1 <: K, V1 <: V](asyncLoader: K1 => Future[V1]): AsyncLoadingCache[K1, V1] =
-    underlying.buildAsync[K1, V1](new AsyncCacheLoader[K1, V1] {
+  def buildAsyncFuture[K1 <: K, V1 <: V](asyncLoader: K1 => Future[V1]): SAsyncLoadingCache[K1, V1] =
+    SAsyncLoadingCache(underlying.buildAsync[K1, V1](new AsyncCacheLoader[K1, V1] {
       override def asyncLoad(key: K1, executor: Executor): CompletableFuture[V1] =
         asyncLoader(key).toJava.toCompletableFuture
-    })
+    }))
 }
