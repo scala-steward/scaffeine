@@ -82,35 +82,34 @@ case class Scaffeine[K, V](underlying: Caffeine[K, V]) {
 
   def build[K1 <: K, V1 <: V](
     loader: K1 => V1,
-    allLoader: Option[Iterable[K1] => Map[K1, V1]] = None
+    allLoader: Option[Iterable[K1] => Map[K1, V1]] = None,
+    reloadLoader: Option[(K1, V1) => V1] = None
   ): LoadingCache[K1, V1] =
-    LoadingCache(underlying.build(new CacheLoader[K1, V1] {
-      override def load(key: K1): V1 = loader(key)
-
-      override def loadAll(keys: lang.Iterable[_ <: K1]): util.Map[K1, V1] =
-        allLoader match {
-          case Some(l) => l(keys.asScala).asJava
-          case _ => super.loadAll(keys)
-        }
-    }))
+    LoadingCache(underlying.build(
+      toCacheLoader(
+        loader,
+        allLoader,
+        reloadLoader
+      )
+    ))
 
   def buildAsync[K1 <: K, V1 <: V](
     loader: K1 => V1,
-    allLoader: Option[Iterable[K1] => Map[K1, V1]] = None
+    allLoader: Option[Iterable[K1] => Map[K1, V1]] = None,
+    reloadLoader: Option[(K1, V1) => V1] = None
   ): AsyncLoadingCache[K1, V1] =
-    AsyncLoadingCache(underlying.buildAsync[K1, V1](new CacheLoader[K1, V1] {
-      override def load(key: K1): V1 = loader(key)
-
-      override def loadAll(keys: lang.Iterable[_ <: K1]): util.Map[K1, V1] =
-        allLoader match {
-          case Some(l) => l(keys.asScala).asJava
-          case _ => super.loadAll(keys)
-        }
-    }))
+    AsyncLoadingCache(underlying.buildAsync[K1, V1](
+      toCacheLoader(
+        loader,
+        allLoader,
+        reloadLoader
+      )
+    ))
 
   def buildAsyncFuture[K1 <: K, V1 <: V](
     asyncLoader: K1 => Future[V1],
-    allLoader: Option[Iterable[K1] => Future[Map[K1, V1]]] = None
+    allLoader: Option[Iterable[K1] => Future[Map[K1, V1]]] = None,
+    reloadLoader: Option[(K1, V1) => Future[V1]] = None
   )(
     implicit
     ec: ExecutionContext
@@ -124,5 +123,32 @@ case class Scaffeine[K, V](underlying: Caffeine[K, V]) {
           case Some(l) => l(keys.asScala).map(_.asJava).toJava.toCompletableFuture
           case _ => super.asyncLoadAll(keys, executor)
         }
+
+      override def asyncReload(key: K1, oldValue: V1, executor: Executor): CompletableFuture[V1] =
+        reloadLoader match {
+          case Some(l) => l(key, oldValue).toJava.toCompletableFuture
+          case _ => super.asyncReload(key, oldValue, executor)
+        }
     }))
+
+  private[this] def toCacheLoader[K1 <: K, V1 <: V](
+    loader: K1 => V1,
+    allLoader: Option[Iterable[K1] => Map[K1, V1]] = None,
+    reloadLoader: Option[(K1, V1) => V1] = None
+  ): CacheLoader[K1, V1] =
+    new CacheLoader[K1, V1] {
+      override def load(key: K1): V1 = loader(key)
+
+      override def loadAll(keys: lang.Iterable[_ <: K1]): util.Map[K1, V1] =
+        allLoader match {
+          case Some(l) => l(keys.asScala).asJava
+          case _ => super.loadAll(keys)
+        }
+
+      override def reload(key: K1, oldValue: V1): V1 =
+        reloadLoader match {
+          case Some(l) => l(key, oldValue)
+          case _ => super.reload(key, oldValue)
+        }
+    }
 }
