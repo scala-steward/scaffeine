@@ -1,6 +1,6 @@
 package com.github.blemale.scaffeine
 
-import java.util.concurrent.{CompletableFuture, Executor, TimeUnit}
+import java.util.concurrent.{ CompletableFuture, Executor, TimeUnit }
 
 import com.github.benmanes.caffeine.cache._
 import com.github.benmanes.caffeine.cache.stats.StatsCounter
@@ -8,7 +8,7 @@ import com.github.benmanes.caffeine.cache.stats.StatsCounter
 import scala.compat.java8.FunctionConverters._
 import scala.compat.java8.FutureConverters._
 import scala.concurrent.duration.Duration
-import scala.concurrent.{ExecutionContext, ExecutionContextExecutor, Future}
+import scala.concurrent.{ ExecutionContext, ExecutionContextExecutor, Future }
 
 object Scaffeine {
   def apply(): Scaffeine[Any, Any] =

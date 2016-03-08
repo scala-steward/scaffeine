@@ -1,6 +1,6 @@
 package com.github.blemale.scaffeine
 
-import com.github.benmanes.caffeine.cache.{LoadingCache => CaffeineLoadingCache}
+import com.github.benmanes.caffeine.cache.{ LoadingCache => CaffeineLoadingCache }
 
 import scala.collection.JavaConverters._
 

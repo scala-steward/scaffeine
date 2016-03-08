@@ -1,3 +1,8 @@
+import com.typesafe.sbt.SbtScalariform
+import com.typesafe.sbt.SbtScalariform.ScalariformKeys
+
+import scalariform.formatter.preferences._
+
 name := "scaffeine"
 
 version := "1.0"
@@ -12,4 +17,10 @@ libraryDependencies ++=
     "org.scalactic" %% "scalactic" % "2.2.6" % "test",
     "org.scalatest" %% "scalatest" % "2.2.6" % "test"
   )
+
+SbtScalariform.scalariformSettings
+
+ScalariformKeys.preferences := ScalariformKeys.preferences.value
+  .setPreference(DoubleIndentClassDeclaration, true)
+    .setPreference(DanglingCloseParenthesis, Force)
 

@@ -2,12 +2,12 @@ package com.github.blemale.scaffeine
 
 import java.util.concurrent.Executor
 
-import com.github.benmanes.caffeine.cache.{AsyncLoadingCache => CaffeineAsyncLoadingCache}
+import com.github.benmanes.caffeine.cache.{ AsyncLoadingCache => CaffeineAsyncLoadingCache }
 
 import scala.collection.JavaConverters._
 import scala.compat.java8.FunctionConverters._
 import scala.compat.java8.FutureConverters._
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.{ ExecutionContext, Future }
 
 object AsyncLoadingCache {
   def apply[K, V](asyncLoadingCache: CaffeineAsyncLoadingCache[K, V]): AsyncLoadingCache[K, V] =
