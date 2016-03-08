@@ -74,7 +74,7 @@ case class Scaffeine[K, V](underlying: Caffeine[K, V]) {
   def recordStats(): Scaffeine[K, V] =
     Scaffeine(underlying.recordStats())
 
-  def recordStat[C <: StatsCounter](statsCounterSupplier: () => C) =
+  def recordStats[C <: StatsCounter](statsCounterSupplier: () => C) =
     Scaffeine(underlying.recordStats(asJavaSupplier(statsCounterSupplier)))
 
   def build[K1 <: K, V1 <: V](): Cache[K1, V1] =
