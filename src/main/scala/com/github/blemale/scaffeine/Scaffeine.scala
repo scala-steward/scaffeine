@@ -107,7 +107,7 @@ case class Scaffeine[K, V](underlying: Caffeine[K, V]) {
     ))
 
   def buildAsyncFuture[K1 <: K, V1 <: V](
-    asyncLoader: K1 => Future[V1],
+    loader: K1 => Future[V1],
     allLoader: Option[Iterable[K1] => Future[Map[K1, V1]]] = None,
     reloadLoader: Option[(K1, V1) => Future[V1]] = None
   )(
@@ -116,7 +116,7 @@ case class Scaffeine[K, V](underlying: Caffeine[K, V]) {
   ): AsyncLoadingCache[K1, V1] =
     AsyncLoadingCache(underlying.buildAsync[K1, V1](new AsyncCacheLoader[K1, V1] {
       override def asyncLoad(key: K1, executor: Executor): CompletableFuture[V1] =
-        asyncLoader(key).toJava.toCompletableFuture
+        loader(key).toJava.toCompletableFuture
 
       override def asyncLoadAll(keys: lang.Iterable[_ <: K1], executor: Executor): CompletableFuture[util.Map[K1, V1]] =
         allLoader match {

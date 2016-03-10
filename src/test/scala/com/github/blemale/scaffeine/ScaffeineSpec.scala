@@ -195,17 +195,54 @@ class ScaffeineSpec
       cache shouldBe a[LoadingCache[_, _]]
     }
 
+    "build loading cache from loading, all loading and reloading functions" in {
+      val cache =
+        Scaffeine()
+          .build[Int, Int](
+            loader = (key: Int) => key + 1,
+            allLoader = Some((keys: Iterable[Int]) => keys.map(i => (i -> (i + 1))).toMap),
+            reloadLoader = Some((key: Int, old: Int) => key + 1)
+          )
+
+      cache shouldBe a[LoadingCache[_, _]]
+    }
+
     "build async loading cache from sync loading function " in {
       val cache = Scaffeine().buildAsync[Int, Int]((i: Int) => i + 1)
 
       cache shouldBe a[AsyncLoadingCache[_, _]]
     }
 
-    "build async loading cache from async loading function " in {
+    "build async loading cache from sync loading, all loading and reloading functions" in {
+      val cache =
+        Scaffeine()
+          .buildAsync[Int, Int](
+            loader = (key: Int) => key + 1,
+            allLoader = Some((keys: Iterable[Int]) => keys.map(i => (i -> (i + 1))).toMap),
+            reloadLoader = Some((key: Int, old: Int) => key + 1)
+          )
+
+      cache shouldBe a[AsyncLoadingCache[_, _]]
+    }
+
+    "build async loading cache from async loading function" in {
       val cache = Scaffeine().buildAsyncFuture[Int, Int]((i: Int) => Future.successful(i + 1))
 
       cache shouldBe a[AsyncLoadingCache[_, _]]
     }
+
+    "build async loading cache from async loading, all loading and reloading functions" in {
+      val cache =
+        Scaffeine()
+          .buildAsyncFuture[Int, Int](
+            loader = (key: Int) => Future.successful(key + 1),
+            allLoader = Some((keys: Iterable[Int]) => Future.successful(keys.map(i => (i -> (i + 1))).toMap)),
+            reloadLoader = Some((key: Int, old: Int) => Future.successful(key + 1))
+          )
+
+      cache shouldBe a[AsyncLoadingCache[_, _]]
+    }
+
   }
 
 }
