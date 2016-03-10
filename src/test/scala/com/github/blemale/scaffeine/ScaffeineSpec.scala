@@ -3,12 +3,12 @@ package com.github.blemale.scaffeine
 import java.util.concurrent.Executor
 
 import com.github.benmanes.caffeine.cache.stats.StatsCounter
-import com.github.benmanes.caffeine.cache.{ RemovalCause, CacheWriter, RemovalListener, Ticker }
-import com.sun.org.apache.xml.internal.security.encryption.ReferenceList
+import com.github.benmanes.caffeine.cache._
 import org.scalatest.{ PrivateMethodTester, ShouldMatchers, WordSpec }
-import scala.concurrent.duration._
 
-import scala.concurrent.ExecutionContext
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.duration._
+import scala.concurrent.{ ExecutionContext, Future }
 
 class ScaffeineSpec
     extends WordSpec
@@ -16,6 +16,24 @@ class ScaffeineSpec
     with PrivateMethodTester {
 
   "Scaffeine" should {
+    "create builder" in {
+      val scaffeine: Scaffeine[Any, Any] = Scaffeine()
+
+      scaffeine shouldBe a[Scaffeine[_, _]]
+    }
+
+    "create builder from spec" in {
+      val scaffeine: Scaffeine[Any, Any] = Scaffeine(CaffeineSpec.parse("initialCapacity=10"))
+
+      scaffeine shouldBe a[Scaffeine[_, _]]
+    }
+
+    "create builder from spec as string" in {
+      val scaffeine: Scaffeine[Any, Any] = Scaffeine("initialCapacity=10")
+
+      scaffeine shouldBe a[Scaffeine[_, _]]
+    }
+
     "set initial capacity" in {
       val scaffeine = Scaffeine().initialCapacity(99)
 
@@ -97,6 +115,15 @@ class ScaffeineSpec
       expiresAfterWriteNanos should be(10.minutes.toNanos)
     }
 
+    "set expire after access" in {
+      val scaffeine = Scaffeine().expireAfterAccess(10.minutes)
+
+      val getExpiresAfterAccessNanos = PrivateMethod[Long]('getExpiresAfterAccessNanos)
+      val expiresAfterAccessNanos = scaffeine.underlying invokePrivate getExpiresAfterAccessNanos()
+
+      expiresAfterAccessNanos should be(10.minutes.toNanos)
+    }
+
     "set refresh after write" in {
       val scaffeine = Scaffeine().refreshAfterWrite(10.minutes)
 
@@ -154,6 +181,30 @@ class ScaffeineSpec
       val recordingStats = scaffeine.underlying invokePrivate isRecordingStats()
 
       recordingStats should be(true)
+    }
+
+    "build cache" in {
+      val cache = Scaffeine().build[Int, Int]()
+
+      cache shouldBe a[Cache[_, _]]
+    }
+
+    "build loading cache from loading function" in {
+      val cache = Scaffeine().build[Int, Int]((i: Int) => i + 1)
+
+      cache shouldBe a[LoadingCache[_, _]]
+    }
+
+    "build async loading cache from sync loading function " in {
+      val cache = Scaffeine().buildAsync[Int, Int]((i: Int) => i + 1)
+
+      cache shouldBe a[AsyncLoadingCache[_, _]]
+    }
+
+    "build async loading cache from async loading function " in {
+      val cache = Scaffeine().buildAsyncFuture[Int, Int]((i: Int) => Future.successful(i + 1))
+
+      cache shouldBe a[AsyncLoadingCache[_, _]]
     }
   }
 
