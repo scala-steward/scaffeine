@@ -1,11 +1,12 @@
 import com.typesafe.sbt.SbtScalariform
+
 import com.typesafe.sbt.SbtScalariform.ScalariformKeys
 
 import scalariform.formatter.preferences._
 
-name := "scaffeine"
+import ReleaseTransformations._
 
-version := "1.0"
+name := "scaffeine"
 
 scalaVersion := "2.11.7"
 
@@ -22,5 +23,6 @@ SbtScalariform.scalariformSettings
 
 ScalariformKeys.preferences := ScalariformKeys.preferences.value
   .setPreference(DoubleIndentClassDeclaration, true)
-    .setPreference(DanglingCloseParenthesis, Force)
+  .setPreference(DanglingCloseParenthesis, Force)
 
+publishTo := Some(Resolver.file("file", new File(Path.userHome.absolutePath + "/.m2/repository")))
