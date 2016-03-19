@@ -1,5 +1,6 @@
 import com.typesafe.sbt.SbtScalariform
 import com.typesafe.sbt.SbtScalariform.ScalariformKeys
+import sbtrelease.ReleasePlugin.autoImport.ReleaseTransformations._
 
 import scalariform.formatter.preferences._
 
@@ -7,7 +8,7 @@ name := "scaffeine"
 
 organization := "com.github.blemale"
 
-licenses += "Apache License, Version 2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0")
+licenses += "Apache 2" -> url("http://www.apache.org/licenses/LICENSE-2.0.txt")
 
 description := "Thin Scala wrapper for Caffeine."
 
@@ -33,3 +34,18 @@ ScalariformKeys.preferences := ScalariformKeys.preferences.value
   .setPreference(DanglingCloseParenthesis, Force)
 
 publishTo := Some(Resolver.file("file", new File(Path.userHome.absolutePath + "/.m2/repository")))
+
+releaseProcess := Seq[ReleaseStep](
+    checkSnapshotDependencies,
+    inquireVersions,
+    runClean,
+    runTest,
+    setReleaseVersion,
+    commitReleaseVersion,
+    tagRelease,
+    ReleaseStep(action = Command.process("publishSigned", _)),
+    setNextVersion,
+    commitNextVersion,
+    ReleaseStep(action = Command.process("sonatypeReleaseAll", _)),
+    pushChanges
+)
