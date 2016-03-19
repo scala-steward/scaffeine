@@ -16,8 +16,11 @@ object AsyncLoadingCache {
 
 class AsyncLoadingCache[K, V](val underlying: CaffeineAsyncLoadingCache[K, V]) {
 
-  def getIfPresent(key: K)(implicit ec: ExecutionContext): Future[V] =
-    underlying.getIfPresent(key).toScala
+  def getIfPresent(key: K)(implicit ec: ExecutionContext): Future[Option[V]] =
+    Option(underlying.getIfPresent(key)) match {
+      case Some(futureValue) => futureValue.toScala.map(Some(_))
+      case None => Future.successful(None)
+    }
 
   def get(key: K, mappingFunction: K => V)(implicit ec: ExecutionContext): Future[V] =
     underlying.get(key, asJavaFunction(mappingFunction)).toScala
