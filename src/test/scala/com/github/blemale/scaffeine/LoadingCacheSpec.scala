@@ -1,5 +1,7 @@
 package com.github.blemale.scaffeine
 
+import java.util.concurrent.atomic.AtomicInteger
+
 import org.scalatest._
 
 import scala.concurrent.ExecutionContext
@@ -50,7 +52,20 @@ class LoadingCacheSpec
       values should contain only ("foo" -> "present", "bar" -> "bulked")
     }
 
-    "refresh value" in {
+    "refresh value with loader when no refresh loader provided" in {
+      val cache =
+        Scaffeine()
+          .executor(ExecutionContext.fromExecutor(DirectExecutor))
+          .build[String, String]((key: String) => "computed")
+
+      cache.put("foo", "present")
+      cache.refresh("foo")
+      val fooValue = cache.get("foo")
+
+      fooValue should be("computed")
+    }
+
+    "refresh value wih refresh loader when provided" in {
       val cache =
         Scaffeine()
           .executor(ExecutionContext.fromExecutor(DirectExecutor))
