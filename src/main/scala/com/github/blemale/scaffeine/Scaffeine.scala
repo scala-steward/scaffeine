@@ -114,41 +114,76 @@ case class Scaffeine[K, V](underlying: Caffeine[K, V]) {
     implicit
     ec: ExecutionContext
   ): AsyncLoadingCache[K1, V1] =
-    AsyncLoadingCache(underlying.buildAsync[K1, V1](new AsyncCacheLoader[K1, V1] {
-      override def asyncLoad(key: K1, executor: Executor): CompletableFuture[V1] =
-        loader(key).toJava.toCompletableFuture
-
-      override def asyncLoadAll(keys: lang.Iterable[_ <: K1], executor: Executor): CompletableFuture[util.Map[K1, V1]] =
-        allLoader match {
-          case Some(l) => l(keys.asScala).map(_.asJava).toJava.toCompletableFuture
-          case _ => super.asyncLoadAll(keys, executor)
-        }
-
-      override def asyncReload(key: K1, oldValue: V1, executor: Executor): CompletableFuture[V1] =
-        reloadLoader match {
-          case Some(l) => l(key, oldValue).toJava.toCompletableFuture
-          case _ => super.asyncReload(key, oldValue, executor)
-        }
-    }))
+    AsyncLoadingCache(underlying.buildAsync[K1, V1](
+      toAsyncCacheLoader(
+        loader,
+        allLoader,
+        reloadLoader
+      )
+    ))
 
   private[this] def toCacheLoader[K1 <: K, V1 <: V](
     loader: K1 => V1,
     allLoader: Option[Iterable[K1] => Map[K1, V1]] = None,
     reloadLoader: Option[(K1, V1) => V1] = None
-  ): CacheLoader[K1, V1] =
-    new CacheLoader[K1, V1] {
-      override def load(key: K1): V1 = loader(key)
+  ): CacheLoader[K1, V1] = allLoader match {
+    case Some(l) =>
+      new CacheLoader[K1, V1] {
+        override def load(key: K1): V1 = loader(key)
 
-      override def loadAll(keys: lang.Iterable[_ <: K1]): util.Map[K1, V1] =
-        allLoader match {
-          case Some(l) => l(keys.asScala).asJava
-          case _ => super.loadAll(keys)
-        }
+        override def loadAll(keys: lang.Iterable[_ <: K1]): util.Map[K1, V1] =
+          l(keys.asScala).asJava
 
-      override def reload(key: K1, oldValue: V1): V1 =
-        reloadLoader match {
-          case Some(l) => l(key, oldValue)
-          case _ => super.reload(key, oldValue)
-        }
-    }
+        override def reload(key: K1, oldValue: V1): V1 =
+          reloadLoader match {
+            case Some(l) => l(key, oldValue)
+            case _ => super.reload(key, oldValue)
+          }
+      }
+    case None =>
+      new CacheLoader[K1, V1] {
+        override def load(key: K1): V1 = loader(key)
+
+        override def reload(key: K1, oldValue: V1): V1 =
+          reloadLoader match {
+            case Some(l) => l(key, oldValue)
+            case _ => super.reload(key, oldValue)
+          }
+      }
+  }
+
+  private[this] def toAsyncCacheLoader[K1 <: K, V1 <: V](
+    loader: K1 => Future[V1],
+    allLoader: Option[Iterable[K1] => Future[Map[K1, V1]]] = None,
+    reloadLoader: Option[(K1, V1) => Future[V1]] = None
+  )(
+    implicit
+    ec: ExecutionContext
+  ): AsyncCacheLoader[K1, V1] = allLoader match {
+    case Some(l) =>
+      new AsyncCacheLoader[K1, V1] {
+        override def asyncLoad(key: K1, executor: Executor): CompletableFuture[V1] =
+          loader(key).toJava.toCompletableFuture
+
+        override def asyncLoadAll(keys: lang.Iterable[_ <: K1], executor: Executor): CompletableFuture[util.Map[K1, V1]] =
+          l(keys.asScala).map(_.asJava).toJava.toCompletableFuture
+
+        override def asyncReload(key: K1, oldValue: V1, executor: Executor): CompletableFuture[V1] =
+          reloadLoader match {
+            case Some(l) => l(key, oldValue).toJava.toCompletableFuture
+            case _ => super.asyncReload(key, oldValue, executor)
+          }
+      }
+    case None =>
+      new AsyncCacheLoader[K1, V1] {
+        override def asyncLoad(key: K1, executor: Executor): CompletableFuture[V1] =
+          loader(key).toJava.toCompletableFuture
+
+        override def asyncReload(key: K1, oldValue: V1, executor: Executor): CompletableFuture[V1] =
+          reloadLoader match {
+            case Some(l) => l(key, oldValue).toJava.toCompletableFuture
+            case _ => super.asyncReload(key, oldValue, executor)
+          }
+      }
+  }
 }

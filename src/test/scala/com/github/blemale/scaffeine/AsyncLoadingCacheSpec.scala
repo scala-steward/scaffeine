@@ -62,15 +62,25 @@ class AsyncLoadingCacheSpec
 
     "get or load all given values" in {
       import scala.concurrent.ExecutionContext.Implicits.global
-      val cache = Scaffeine().buildAsync[String, String](
-        (key: String) => "loaded",
-        allLoader = Some((keys: Iterable[String]) => keys.map(_ -> "loaded").toMap)
-      )
+      val cache = Scaffeine().buildAsync[String, String]((key: String) => "loaded")
 
       cache.put("foo", Future.successful("present"))
       val values = cache.getAll(List("foo", "bar"))
 
       values.futureValue should contain only ("foo" -> "present", "bar" -> "loaded")
+    }
+
+    "get or bulk load all given values" in {
+      import scala.concurrent.ExecutionContext.Implicits.global
+      val cache = Scaffeine().buildAsync[String, String](
+        (key: String) => "loaded",
+        allLoader = Some((keys: Iterable[String]) => keys.map(_ -> "bulked").toMap)
+      )
+
+      cache.put("foo", Future.successful("present"))
+      val values = cache.getAll(List("foo", "bar"))
+
+      values.futureValue should contain only ("foo" -> "present", "bar" -> "bulked")
     }
 
     "put value" in {
