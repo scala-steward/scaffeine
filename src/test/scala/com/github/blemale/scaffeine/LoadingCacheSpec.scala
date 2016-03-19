@@ -1,10 +1,6 @@
 package com.github.blemale.scaffeine
 
-import java.util.concurrent.atomic.AtomicInteger
-
 import org.scalatest._
-
-import scala.concurrent.ExecutionContext
 
 class LoadingCacheSpec
     extends WordSpec
@@ -55,7 +51,7 @@ class LoadingCacheSpec
     "refresh value with loader when no refresh loader provided" in {
       val cache =
         Scaffeine()
-          .executor(ExecutionContext.fromExecutor(DirectExecutor))
+          .executor(DirectExecutor)
           .build[String, String]((key: String) => "computed")
 
       cache.put("foo", "present")
@@ -68,7 +64,7 @@ class LoadingCacheSpec
     "refresh value wih refresh loader when provided" in {
       val cache =
         Scaffeine()
-          .executor(ExecutionContext.fromExecutor(DirectExecutor))
+          .executor(DirectExecutor)
           .build[String, String](
             loader = (key: String) => "computed",
             reloadLoader = Some((key: String, old: String) => "reload")

@@ -1,12 +1,9 @@
 package com.github.blemale.scaffeine
 
-import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicInteger
 
 import com.github.benmanes.caffeine.cache.RemovalCause
 import org.scalatest._
-
-import scala.concurrent.ExecutionContext
 
 class RemovalListenerSpec
     extends WordSpec
@@ -24,7 +21,7 @@ class RemovalListenerSpec
       val listener = new StubListener
       val cache =
         Scaffeine()
-          .executor(ExecutionContext.fromExecutor(DirectExecutor))
+          .executor(DirectExecutor)
           .removalListener(listener)
           .build[String, String]()
 

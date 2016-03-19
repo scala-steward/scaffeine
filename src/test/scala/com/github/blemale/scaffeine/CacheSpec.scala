@@ -67,7 +67,7 @@ class CacheSpec
     "invalidate entry" in {
       val cache =
         Scaffeine()
-          .executor(ExecutionContext.fromExecutor(DirectExecutor))
+          .executor(DirectExecutor)
           .build[String, String]()
 
       cache.put("foo", "present")
@@ -80,7 +80,7 @@ class CacheSpec
     "invalidate all given entries" in {
       val cache =
         Scaffeine()
-          .executor(ExecutionContext.fromExecutor(DirectExecutor))
+          .executor(DirectExecutor)
           .build[String, String]()
 
       cache.put("foo", "present")
@@ -94,7 +94,7 @@ class CacheSpec
     "invalidate all entries" in {
       val cache =
         Scaffeine()
-          .executor(ExecutionContext.fromExecutor(DirectExecutor))
+          .executor(DirectExecutor)
           .build[String, String]()
 
       cache.put("foo", "present")
@@ -119,7 +119,7 @@ class CacheSpec
     "give its stats" in {
       val cache = Scaffeine()
         .recordStats()
-        .executor(ExecutionContext.fromExecutor(DirectExecutor))
+        .executor(DirectExecutor)
         .build[String, String]()
 
       cache.put("foo", "present")

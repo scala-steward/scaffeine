@@ -28,8 +28,8 @@ case class Scaffeine[K, V](underlying: Caffeine[K, V]) {
   def initialCapacity(initialCapacity: Int): Scaffeine[K, V] =
     Scaffeine(underlying.initialCapacity(initialCapacity))
 
-  def executor(executionContext: ExecutionContext): Scaffeine[K, V] =
-    Scaffeine(underlying.executor(executionContext.asInstanceOf[ExecutionContextExecutor]))
+  def executor(executor: Executor): Scaffeine[K, V] =
+    Scaffeine(underlying.executor(executor))
 
   def maximumSize(maximumSize: Long): Scaffeine[K, V] =
     Scaffeine(underlying.maximumSize(maximumSize))
