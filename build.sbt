@@ -33,8 +33,6 @@ ScalariformKeys.preferences := ScalariformKeys.preferences.value
   .setPreference(DoubleIndentClassDeclaration, true)
   .setPreference(DanglingCloseParenthesis, Force)
 
-publishTo := Some(Resolver.file("file", new File(Path.userHome.absolutePath + "/.m2/repository")))
-
 releaseProcess := Seq[ReleaseStep](
     checkSnapshotDependencies,
     inquireVersions,
