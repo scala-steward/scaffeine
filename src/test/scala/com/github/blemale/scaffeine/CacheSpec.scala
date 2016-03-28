@@ -111,7 +111,7 @@ class CacheSpec
       cache.put("foo", "present")
       cache.put("bar", "present")
 
-      val estimateSize = cache.estimateSize()
+      val estimateSize = cache.estimatedSize()
 
       estimateSize should be(2)
     }

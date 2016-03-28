@@ -37,7 +37,7 @@ class Cache[K, V](val underlying: CaffeineCache[K, V]) {
   def invalidateAll(): Unit =
     underlying.invalidateAll()
 
-  def estimateSize(): Long =
+  def estimatedSize(): Long =
     underlying.estimatedSize()
 
   def stats(): CacheStats =
