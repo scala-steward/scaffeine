@@ -47,3 +47,5 @@ releaseProcess := Seq[ReleaseStep](
     ReleaseStep(action = Command.process("sonatypeReleaseAll", _)),
     pushChanges
 )
+
+useGpg := true
