@@ -12,11 +12,11 @@ class WeigherSpec
       val cache = Scaffeine()
         .executor(DirectExecutor)
         .weigher[String, String]((key, value) => value.length)
-        .maximumWeight(5)
+        .maximumWeight(10)
         .build[String, String]()
 
       cache.put("foo", "word")
-      cache.put("bar", "verylongword")
+      cache.put("bar", "longword")
 
       cache.getIfPresent("foo") should be(None)
     }
