@@ -14,7 +14,7 @@ class LoadingCache[K, V](override val underlying: CaffeineLoadingCache[K, V]) ex
    * Returns the value associated with `key` in this cache, obtaining that value from
    * `loader` if necessary.
    * <p>
-   * If another call to [[LoadingCache.get]] is currently loading the value for `key`, this thread
+   * If another call to this method is currently loading the value for `key`, this thread
    * simply waits for that thread to finish and returns its loaded value. Note that multiple threads
    * can concurrently load values for distinct keys.
    *

@@ -34,7 +34,7 @@ object Scaffeine {
   /**
    * Constructs a new `Scaffeine` instance with the settings specified in `spec`.
    *
-   * @param spec a [[String]] in the format specified by
+   * @param spec a [[java.lang.String]] in the format specified by
    *             [[com.github.benmanes.caffeine.cache.CaffeineSpec]]
    * @return a new instance with the specification's settings
    */
@@ -278,7 +278,7 @@ case class Scaffeine[K, V](underlying: Caffeine[K, V]) {
     ))
 
   /**
-   * Builds a cache, which either returns a [[Future]] already loaded or currently
+   * Builds a cache, which either returns a [[scala.concurrent.Future]] already loaded or currently
    * computing the value for a given key, or atomically computes the value asynchronously through a
    * supplied mapping function or the supplied `loader`. If the asynchronous computation
    * fails then the entry will be automatically removed. Note that multiple threads can
@@ -306,7 +306,7 @@ case class Scaffeine[K, V](underlying: Caffeine[K, V]) {
     ))
 
   /**
-   * Builds a cache, which either returns a [[Future]] already loaded or currently
+   * Builds a cache, which either returns a [[scala.concurrent.Future]] already loaded or currently
    * computing the value for a given key, or atomically computes the value asynchronously through a
    * supplied mapping function or the supplied async `loader`. If the asynchronous
    * computation fails then the entry will be automatically removed.
