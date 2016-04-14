@@ -180,7 +180,7 @@ case class Scaffeine[K, V](underlying: Caffeine[K, V]) {
 
   /**
    * Specifies a nanosecond-precision time source for use in determining when entries should be
-   * expired or refreshed. By default, [[java.lang.System.nanoTime]] is used.
+   * expired or refreshed. By default, `java.lang.System.nanoTime` is used.
    *
    * @param ticker a nanosecond-precision time source
    * @return this builder instance
