@@ -1,3 +1,5 @@
+TravisCredentials.updateCredentials()
+
 pomExtra in Global := {
     <scm>
       <connection>scm:git:github.com/blemale/scaffeine.git</connection>
