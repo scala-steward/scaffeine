@@ -1,3 +1,4 @@
+import Dependencies._
 import com.typesafe.sbt.SbtScalariform
 import com.typesafe.sbt.SbtScalariform.ScalariformKeys
 import sbtrelease.ReleasePlugin.autoImport.ReleaseTransformations._
@@ -18,13 +19,15 @@ homepage := Some(url("https://github.com/blemale/scaffeine"))
 
 scalaVersion := "2.11.7"
 
+val caffeineVersion = "2.2.6"
+
 libraryDependencies ++=
   Seq(
-    "com.github.ben-manes.caffeine" % "caffeine" % "2.2.6",
-    "org.scala-lang.modules" %% "scala-java8-compat" % "0.7.0",
-    "com.google.code.findbugs" % "jsr305" % "3.0.1" % "provided",
-    "org.scalactic" %% "scalactic" % "2.2.6" % "test",
-    "org.scalatest" %% "scalatest" % "2.2.6" % "test"
+    Caffeine,
+    Java8Compat,
+    Jsr305 % "provided",
+    Scalactic % "test",
+    Scalatest % "test"
   )
 
 SbtScalariform.scalariformSettings
@@ -34,18 +37,18 @@ ScalariformKeys.preferences := ScalariformKeys.preferences.value
   .setPreference(DanglingCloseParenthesis, Force)
 
 releaseProcess := Seq[ReleaseStep](
-    checkSnapshotDependencies,
-    inquireVersions,
-    runClean,
-    runTest,
-    setReleaseVersion,
-    commitReleaseVersion,
-    tagRelease,
-    ReleaseStep(action = Command.process("publishSigned", _)),
-    setNextVersion,
-    commitNextVersion,
-    ReleaseStep(action = Command.process("sonatypeReleaseAll", _)),
-    pushChanges
+  checkSnapshotDependencies,
+  inquireVersions,
+  runClean,
+  runTest,
+  setReleaseVersion,
+  commitReleaseVersion,
+  tagRelease,
+  ReleaseStep(action = Command.process("publishSigned", _)),
+  setNextVersion,
+  commitNextVersion,
+  ReleaseStep(action = Command.process("sonatypeReleaseAll", _)),
+  pushChanges
 )
 
 useGpg := true
