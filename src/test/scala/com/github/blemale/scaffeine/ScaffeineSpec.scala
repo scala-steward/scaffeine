@@ -55,7 +55,7 @@ class ScaffeineSpec
     "set maximum size" in {
       val scaffeine = Scaffeine().maximumSize(99)
 
-      val getMaximumWeight = PrivateMethod[Long]('getMaximumWeight)
+      val getMaximumWeight = PrivateMethod[Long]('getMaximum)
       val maximumSize = scaffeine.underlying invokePrivate getMaximumWeight()
 
       maximumSize should be(99L)
@@ -64,7 +64,7 @@ class ScaffeineSpec
     "set maximum weight" in {
       val scaffeine = Scaffeine().maximumWeight(99).weigher((_: Any, _: Any) => 1)
 
-      val getMaximumWeight = PrivateMethod[Long]('getMaximumWeight)
+      val getMaximumWeight = PrivateMethod[Long]('getMaximum)
       val maximumWeight = scaffeine.underlying invokePrivate getMaximumWeight()
 
       maximumWeight should be(99L)
