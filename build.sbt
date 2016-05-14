@@ -1,7 +1,6 @@
 import Dependencies._
 import com.typesafe.sbt.SbtScalariform
 import com.typesafe.sbt.SbtScalariform.ScalariformKeys
-import sbtrelease.ReleasePlugin.autoImport.ReleaseTransformations._
 
 import scalariform.formatter.preferences._
 
@@ -33,20 +32,3 @@ SbtScalariform.scalariformSettings
 ScalariformKeys.preferences := ScalariformKeys.preferences.value
   .setPreference(DoubleIndentClassDeclaration, true)
   .setPreference(DanglingCloseParenthesis, Force)
-
-releaseProcess := Seq[ReleaseStep](
-  checkSnapshotDependencies,
-  inquireVersions,
-  runClean,
-  runTest,
-  setReleaseVersion,
-  commitReleaseVersion,
-  tagRelease,
-  ReleaseStep(action = Command.process("publishSigned", _)),
-  setNextVersion,
-  commitNextVersion,
-  ReleaseStep(action = Command.process("sonatypeReleaseAll", _)),
-  pushChanges
-)
-
-useGpg := true
