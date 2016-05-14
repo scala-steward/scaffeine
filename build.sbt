@@ -19,8 +19,6 @@ homepage := Some(url("https://github.com/blemale/scaffeine"))
 
 scalaVersion := "2.11.7"
 
-val caffeineVersion = "2.2.6"
-
 libraryDependencies ++=
   Seq(
     Caffeine,
