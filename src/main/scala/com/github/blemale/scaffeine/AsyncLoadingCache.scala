@@ -23,11 +23,8 @@ class AsyncLoadingCache[K, V](val underlying: CaffeineAsyncLoadingCache[K, V]) {
    * @return an option containing the current (existing or computed) future value to which the
    *         specified key is mapped, or `None` if this map contains no mapping for the key
    */
-  def getIfPresent(key: K)(implicit ec: ExecutionContext): Future[Option[V]] =
-    Option(underlying.getIfPresent(key)) match {
-      case Some(futureValue) => futureValue.toScala.map(Some(_))
-      case None => Future.successful(None)
-    }
+  def getIfPresent(key: K)(implicit ec: ExecutionContext): Option[Future[V]] =
+    Option(underlying.getIfPresent(key)).map(_.toScala)
 
   /**
    * Returns the future associated with `key` in this cache, obtaining that value from

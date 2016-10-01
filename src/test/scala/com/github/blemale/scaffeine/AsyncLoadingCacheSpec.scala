@@ -21,8 +21,8 @@ class AsyncLoadingCacheSpec
         val fooValue = cache.getIfPresent("foo")
         val barValue = cache.getIfPresent("bar")
 
-        fooValue.futureValue.value should be("present")
-        barValue.futureValue should be(None)
+        fooValue.value.futureValue should be("present")
+        barValue should be(None)
       }
 
       "get or load value" in {
@@ -91,7 +91,7 @@ class AsyncLoadingCacheSpec
         cache.put("foo", Future.successful("present"))
         val fooValue = cache.getIfPresent("foo")
 
-        fooValue.futureValue.value should be("present")
+        fooValue.value.futureValue should be("present")
       }
 
       "expose a synchronous view of itself" in {
