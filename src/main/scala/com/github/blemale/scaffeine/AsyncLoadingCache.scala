@@ -7,7 +7,7 @@ import com.github.benmanes.caffeine.cache.{ AsyncLoadingCache => CaffeineAsyncLo
 import scala.collection.JavaConverters._
 import scala.compat.java8.FunctionConverters._
 import scala.compat.java8.FutureConverters._
-import scala.concurrent.{ ExecutionContext, Future }
+import scala.concurrent.Future
 
 object AsyncLoadingCache {
   def apply[K, V](asyncLoadingCache: CaffeineAsyncLoadingCache[K, V]): AsyncLoadingCache[K, V] =
@@ -15,6 +15,8 @@ object AsyncLoadingCache {
 }
 
 class AsyncLoadingCache[K, V](val underlying: CaffeineAsyncLoadingCache[K, V]) {
+  private[this] implicit val ec = DirectExecutionContext
+
   /**
    * Returns the future associated with `key` in this cache, or `None` if there is no
    * cached future for `key`.
@@ -23,7 +25,7 @@ class AsyncLoadingCache[K, V](val underlying: CaffeineAsyncLoadingCache[K, V]) {
    * @return an option containing the current (existing or computed) future value to which the
    *         specified key is mapped, or `None` if this map contains no mapping for the key
    */
-  def getIfPresent(key: K)(implicit ec: ExecutionContext): Option[Future[V]] =
+  def getIfPresent(key: K): Option[Future[V]] =
     Option(underlying.getIfPresent(key)).map(_.toScala)
 
   /**
@@ -35,7 +37,7 @@ class AsyncLoadingCache[K, V](val underlying: CaffeineAsyncLoadingCache[K, V]) {
    * @param mappingFunction the function to asynchronously compute a value
    * @return the current (existing or computed) future value associated with the specified key
    */
-  def get(key: K, mappingFunction: K => V)(implicit ec: ExecutionContext): Future[V] =
+  def get(key: K, mappingFunction: K => V): Future[V] =
     underlying.get(key, asJavaFunction(mappingFunction)).toScala
 
   /**
@@ -49,7 +51,7 @@ class AsyncLoadingCache[K, V](val underlying: CaffeineAsyncLoadingCache[K, V]) {
    * @throws java.lang.RuntimeException     or Error if the mappingFunction does when constructing the future,
    *                              in which case the mapping is left unestablished
    */
-  def getFuture(key: K, mappingFunction: K => Future[V])(implicit ec: ExecutionContext): Future[V] =
+  def getFuture(key: K, mappingFunction: K => Future[V]): Future[V] =
     underlying.get(
       key,
       asJavaBiFunction((k: K, _: Executor) => mappingFunction(k).toJava.toCompletableFuture)
@@ -65,7 +67,7 @@ class AsyncLoadingCache[K, V](val underlying: CaffeineAsyncLoadingCache[K, V]) {
    * @throws java.lang.RuntimeException     or Error if the `loader` does when constructing the future,
    *                                                      in which case the mapping is left unestablished
    */
-  def get(key: K)(implicit ec: ExecutionContext): Future[V] =
+  def get(key: K): Future[V] =
     underlying.get(key).toScala
 
   /**
@@ -78,7 +80,7 @@ class AsyncLoadingCache[K, V](val underlying: CaffeineAsyncLoadingCache[K, V]) {
    * @return the future containing an mapping of keys to values for the specified keys in this cache
    * @throws java.lang.RuntimeException     or Error if the `loader` does so
    */
-  def getAll(keys: Iterable[K])(implicit ec: ExecutionContext): Future[Map[K, V]] =
+  def getAll(keys: Iterable[K]): Future[Map[K, V]] =
     underlying.getAll(keys.asJava).toScala.map(_.asScala.toMap)
 
   /**
@@ -89,7 +91,7 @@ class AsyncLoadingCache[K, V](val underlying: CaffeineAsyncLoadingCache[K, V]) {
    * @param key         key with which the specified value is to be associated
    * @param valueFuture value to be associated with the specified key
    */
-  def put(key: K, valueFuture: Future[V])(implicit ec: ExecutionContext): Unit =
+  def put(key: K, valueFuture: Future[V]): Unit =
     underlying.put(key, valueFuture.toJava.toCompletableFuture)
 
   /**
