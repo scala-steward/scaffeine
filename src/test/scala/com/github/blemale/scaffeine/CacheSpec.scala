@@ -6,7 +6,7 @@ import scala.concurrent.ExecutionContext
 
 class CacheSpec
     extends WordSpec
-    with ShouldMatchers
+    with Matchers
     with OptionValues {
 
   "Cache" should {

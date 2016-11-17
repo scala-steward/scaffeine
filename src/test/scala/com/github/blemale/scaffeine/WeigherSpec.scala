@@ -4,7 +4,7 @@ import org.scalatest._
 
 class WeigherSpec
     extends WordSpec
-    with ShouldMatchers
+    with Matchers
     with OptionValues {
 
   "Cache" should {

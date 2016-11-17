@@ -7,7 +7,7 @@ import org.scalatest._
 
 class RemovalListenerSpec
     extends WordSpec
-    with ShouldMatchers {
+    with Matchers {
 
   class StubListener extends ((String, String, RemovalCause) => Unit) {
     val callCounter = new AtomicInteger
