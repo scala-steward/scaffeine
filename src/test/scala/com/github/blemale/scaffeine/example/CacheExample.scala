@@ -1,10 +1,10 @@
 package com.github.blemale.scaffeine.example
 
-import org.scalatest.{ FlatSpec, ShouldMatchers }
+import org.scalatest.{ FlatSpec, Matchers }
 
 class CacheExample
     extends FlatSpec
-    with ShouldMatchers {
+    with Matchers {
 
   "Cache" should "be created from Scaffeine builder" in {
     import com.github.blemale.scaffeine.{ Cache, Scaffeine }

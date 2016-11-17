@@ -4,7 +4,7 @@ import java.util.concurrent.Executor
 
 import com.github.benmanes.caffeine.cache.stats.StatsCounter
 import com.github.benmanes.caffeine.cache._
-import org.scalatest.{ PrivateMethodTester, ShouldMatchers, WordSpec }
+import org.scalatest.{ PrivateMethodTester, Matchers, WordSpec }
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
@@ -12,7 +12,7 @@ import scala.concurrent.{ ExecutionContext, Future }
 
 class ScaffeineSpec
     extends WordSpec
-    with ShouldMatchers
+    with Matchers
     with PrivateMethodTester {
 
   "Scaffeine" should {

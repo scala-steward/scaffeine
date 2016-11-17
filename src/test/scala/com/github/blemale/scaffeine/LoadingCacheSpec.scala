@@ -4,7 +4,7 @@ import org.scalatest._
 
 class LoadingCacheSpec
     extends WordSpec
-    with ShouldMatchers
+    with Matchers
     with OptionValues {
 
   "LoadingCache" should {

@@ -1,13 +1,13 @@
 package com.github.blemale.scaffeine
 
 import org.scalatest.concurrent.ScalaFutures
-import org.scalatest.{ OptionValues, ShouldMatchers, WordSpec }
+import org.scalatest.{ Matchers, OptionValues, WordSpec }
 
 import scala.concurrent.Future
 
 class AsyncLoadingCacheSpec
     extends WordSpec
-    with ShouldMatchers
+    with Matchers
     with ScalaFutures
     with OptionValues {
 

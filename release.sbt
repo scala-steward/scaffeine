@@ -17,6 +17,9 @@ releaseProcess := Seq[ReleaseStep](
 
 useGpg := true
 
+releaseCrossBuild := true
+crossScalaVersions := Seq("2.11.8", "2.12.0")
+
 TravisCredentials.updateCredentials()
 
 pomExtra in Global := {
