@@ -64,7 +64,6 @@ So this is the thinner wrapper we can came with to make Caffeine easy and idioma
  "AsyncLoadingCache" should "be created from Scaffeine builder with synchronous loader" in {
     import com.github.blemale.scaffeine.{ AsyncLoadingCache, Scaffeine }
     import scala.concurrent.duration._
-    import scala.concurrent.ExecutionContext.Implicits.global
 
     val cache: AsyncLoadingCache[Int, String] =
       Scaffeine()
