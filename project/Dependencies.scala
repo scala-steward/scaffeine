@@ -1,7 +1,7 @@
 import sbt._
 
 object Dependencies {
-  val CaffeineVersion = "2.3.5"
+  val CaffeineVersion = "2.4.0"
 
   val Caffeine = "com.github.ben-manes.caffeine" % "caffeine" % CaffeineVersion
   val Java8Compat = "org.scala-lang.modules" %% "scala-java8-compat" % "0.8.0"
