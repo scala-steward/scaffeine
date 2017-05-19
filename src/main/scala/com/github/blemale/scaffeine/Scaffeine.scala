@@ -204,7 +204,7 @@ case class Scaffeine[K, V](underlying: Caffeine[K, V]) {
    * @throws java.lang.IllegalArgumentException if `duration` is negative
    * @throws java.lang.IllegalStateException    if the refresh interval was already set
    */
-  def refreshAfterWrite(duration: Duration) =
+  def refreshAfterWrite(duration: Duration): Scaffeine[K, V] =
     Scaffeine(underlying.refreshAfterWrite(duration.toNanos, TimeUnit.NANOSECONDS))
 
   /**
