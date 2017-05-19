@@ -69,7 +69,7 @@ case class Scaffeine[K, V](underlying: Caffeine[K, V]) {
    * @param maximumSize the maximum size of the cache
    * @return this builder instance
    * @throws java.lang.IllegalArgumentException `size` is negative
-   * @throws java.lang.IllegalStateException    if a maximum size or weight was already set
+   * @throws java.lang.IllegalStateException if a maximum size or weight was already set
    */
   def maximumSize(maximumSize: Long): Scaffeine[K, V] =
     Scaffeine(underlying.maximumSize(maximumSize))
@@ -82,7 +82,7 @@ case class Scaffeine[K, V](underlying: Caffeine[K, V]) {
    * @param maximumWeight the maximum total weight of entries the cache may contain
    * @return this builder instance
    * @throws java.lang.IllegalArgumentException if `maximumWeight` is negative
-   * @throws java.lang.IllegalStateException    if a maximum weight or size was already set
+   * @throws java.lang.IllegalStateException if a maximum weight or size was already set
    */
   def maximumWeight(maximumWeight: Long): Scaffeine[K, V] =
     Scaffeine(underlying.maximumWeight(maximumWeight))
@@ -95,7 +95,7 @@ case class Scaffeine[K, V](underlying: Caffeine[K, V]) {
    * @tparam V1 value type of the weigher
    * @return this builder instance
    * @throws java.lang.IllegalArgumentException if `size` is negative
-   * @throws java.lang.IllegalStateException    if a maximum size was already set
+   * @throws java.lang.IllegalStateException if a maximum size was already set
    */
   def weigher[K1 <: K, V1 <: V](weigher: (K1, V1) => Int) =
     Scaffeine(underlying.weigher(new Weigher[K1, V1] {
@@ -146,7 +146,7 @@ case class Scaffeine[K, V](underlying: Caffeine[K, V]) {
    *                 removed
    * @return this builder instance
    * @throws java.lang.IllegalArgumentException if `duration` is negative
-   * @throws java.lang.IllegalStateException    if the time to live or time to idle was already set
+   * @throws java.lang.IllegalStateException if the time to live or time to idle was already set
    */
   def expireAfterWrite(duration: Duration): Scaffeine[K, V] =
     Scaffeine(underlying.expireAfterWrite(duration.toNanos, TimeUnit.NANOSECONDS))
@@ -160,7 +160,7 @@ case class Scaffeine[K, V](underlying: Caffeine[K, V]) {
    *                 automatically removed
    * @return this builder instance
    * @throws java.lang.IllegalArgumentException if `duration` is negative
-   * @throws java.lang.IllegalStateException    if the time to idle or time to live was already set
+   * @throws java.lang.IllegalStateException if the time to idle or time to live was already set
    */
   def expireAfterAccess(duration: Duration): Scaffeine[K, V] =
     Scaffeine(underlying.expireAfterAccess(duration.toNanos, TimeUnit.NANOSECONDS))
@@ -202,7 +202,7 @@ case class Scaffeine[K, V](underlying: Caffeine[K, V]) {
    *                 stale, and thus eligible for refresh
    * @return this builder instance
    * @throws java.lang.IllegalArgumentException if `duration` is negative
-   * @throws java.lang.IllegalStateException    if the refresh interval was already set
+   * @throws java.lang.IllegalStateException if the refresh interval was already set
    */
   def refreshAfterWrite(duration: Duration): Scaffeine[K, V] =
     Scaffeine(underlying.refreshAfterWrite(duration.toNanos, TimeUnit.NANOSECONDS))
