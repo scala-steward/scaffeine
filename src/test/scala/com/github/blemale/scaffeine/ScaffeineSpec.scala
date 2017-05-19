@@ -1,14 +1,15 @@
 package com.github.blemale.scaffeine
 
+import java.lang.System.nanoTime
 import java.util.concurrent.Executor
 
 import com.github.benmanes.caffeine.cache.stats.StatsCounter
 import com.github.benmanes.caffeine.cache._
-import org.scalatest.{ PrivateMethodTester, Matchers, WordSpec }
+import org.scalatest.{Matchers, PrivateMethodTester, WordSpec}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
-import scala.concurrent.{ ExecutionContext, Future }
+import scala.concurrent.{ExecutionContext, Future}
 
 class ScaffeineSpec
     extends WordSpec
@@ -122,6 +123,21 @@ class ScaffeineSpec
       val expiresAfterAccessNanos = scaffeine.underlying invokePrivate getExpiresAfterAccessNanos()
 
       expiresAfterAccessNanos should be(10.minutes.toNanos)
+    }
+
+    "set expire after" in {
+      val scaffeine = Scaffeine().expireAfter(
+        create = (_: Any, _: Any, _) => 10.minutes,
+        update = (_: Any, _: Any, _, _) => 20.minutes,
+        read   = (_: Any, _: Any, _, _) => 30.minutes
+      )
+
+      val getExpiry = PrivateMethod[Expiry[Any, Any]]('getExpiry)
+      val expiry = scaffeine.underlying invokePrivate getExpiry(false)
+
+      expiry.expireAfterCreate(null, null, 0) should be(10.minutes.toNanos)
+      expiry.expireAfterUpdate(null, null, 0, 0) should be(20.minutes.toNanos)
+      expiry.expireAfterRead(null, null, 0, 0) should be(30.minutes.toNanos)
     }
 
     "set refresh after write" in {
