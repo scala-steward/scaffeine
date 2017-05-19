@@ -5,11 +5,11 @@ import java.util.concurrent.Executor
 
 import com.github.benmanes.caffeine.cache.stats.StatsCounter
 import com.github.benmanes.caffeine.cache._
-import org.scalatest.{Matchers, PrivateMethodTester, WordSpec}
+import org.scalatest.{ Matchers, PrivateMethodTester, WordSpec }
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.{ ExecutionContext, Future }
 
 class ScaffeineSpec
     extends WordSpec
@@ -129,7 +129,7 @@ class ScaffeineSpec
       val scaffeine = Scaffeine().expireAfter(
         create = (_: Any, _: Any, _) => 10.minutes,
         update = (_: Any, _: Any, _, _) => 20.minutes,
-        read   = (_: Any, _: Any, _, _) => 30.minutes
+        read = (_: Any, _: Any, _, _) => 30.minutes
       )
 
       val getExpiry = PrivateMethod[Expiry[Any, Any]]('getExpiry)
