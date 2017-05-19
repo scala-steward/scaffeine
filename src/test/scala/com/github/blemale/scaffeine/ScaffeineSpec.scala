@@ -1,6 +1,5 @@
 package com.github.blemale.scaffeine
 
-import java.lang.System.nanoTime
 import java.util.concurrent.Executor
 
 import com.github.benmanes.caffeine.cache.stats.StatsCounter

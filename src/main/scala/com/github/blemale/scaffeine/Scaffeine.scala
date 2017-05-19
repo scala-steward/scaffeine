@@ -49,7 +49,7 @@ case class Scaffeine[K, V](underlying: Caffeine[K, V]) {
    * @param initialCapacity minimum total size for the internal hash tables
    * @return this builder instance
    * @throws java.lang.IllegalArgumentException if initialCapacity
-   * @throws java.lang.IllegalStateException    if an initial capacity was already set
+   * @throws java.lang.IllegalStateException if an initial capacity was already set
    */
   def initialCapacity(initialCapacity: Int): Scaffeine[K, V] =
     Scaffeine(underlying.initialCapacity(initialCapacity))
@@ -146,7 +146,7 @@ case class Scaffeine[K, V](underlying: Caffeine[K, V]) {
    *                 removed
    * @return this builder instance
    * @throws java.lang.IllegalArgumentException if `duration` is negative
-   * @throws java.lang.IllegalStateException if the time to live or time to idle was already set
+   * @throws java.lang.IllegalStateException    if the time to live or time to idle was already set
    */
   def expireAfterWrite(duration: Duration): Scaffeine[K, V] =
     Scaffeine(underlying.expireAfterWrite(duration.toNanos, TimeUnit.NANOSECONDS))
@@ -286,8 +286,8 @@ case class Scaffeine[K, V](underlying: Caffeine[K, V]) {
    * loading the value for this key, simply waits for that thread to finish and returns its loaded
    * value. Note that multiple threads can concurrently load values for distinct keys.
    *
-   * @param loader       the loader used to obtain new values
-   * @param allLoader    the loader used to obtain new values in bulk, called by [[LoadingCache.getAll]]
+   * @param loader the loader used to obtain new values
+   * @param allLoader the loader used to obtain new values in bulk, called by [[LoadingCache.getAll]]
    * @param reloadLoader the loader used to obtain already-cached values
    * @tparam K1 the key type of the loader
    * @tparam V1 the value type of the loader
@@ -313,8 +313,8 @@ case class Scaffeine[K, V](underlying: Caffeine[K, V]) {
    * fails then the entry will be automatically removed. Note that multiple threads can
    * concurrently load values for distinct keys.
    *
-   * @param loader       the loader used to obtain new values
-   * @param allLoader    the loader used to obtain new values in bulk, called by [[AsyncLoadingCache.getAll]]
+   * @param loader the loader used to obtain new values
+   * @param allLoader the loader used to obtain new values in bulk, called by [[AsyncLoadingCache.getAll]]
    * @param reloadLoader the loader used to obtain already-cached values
    * @tparam K1 the key type of the loader
    * @tparam V1 the value type of the loader
@@ -341,8 +341,8 @@ case class Scaffeine[K, V](underlying: Caffeine[K, V]) {
    * computation fails then the entry will be automatically removed.
    * Note that multiple threads can concurrently load values for distinct keys.
    *
-   * @param loader       the loader used to obtain new values
-   * @param allLoader    the loader used to obtain new values in bulk, called by [[AsyncLoadingCache.getAll]]
+   * @param loader the loader used to obtain new values
+   * @param allLoader the loader used to obtain new values in bulk, called by [[AsyncLoadingCache.getAll]]
    * @param reloadLoader the loader used to obtain already-cached values
    * @tparam K1 the key type of the loader
    * @tparam V1 the value type of the loader
