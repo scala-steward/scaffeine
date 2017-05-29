@@ -4,7 +4,7 @@ import java.util.concurrent.Executor
 
 import com.github.benmanes.caffeine.cache.stats.StatsCounter
 import com.github.benmanes.caffeine.cache._
-import org.scalatest.{ PrivateMethodTester, Matchers, WordSpec }
+import org.scalatest.{ Matchers, PrivateMethodTester, WordSpec }
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
@@ -82,10 +82,10 @@ class ScaffeineSpec
     "set weak keys" in {
       val scaffeine = Scaffeine().weakKeys()
 
-      val isWeakKeys = PrivateMethod[Boolean]('isWeakKeys)
-      val weakKeys = scaffeine.underlying invokePrivate isWeakKeys()
+      val isStrongKeys = PrivateMethod[Boolean]('isStrongKeys)
+      val strongKeys = scaffeine.underlying invokePrivate isStrongKeys()
 
-      weakKeys should be(true)
+      strongKeys should be(false)
     }
 
     "set weak values" in {
@@ -100,10 +100,14 @@ class ScaffeineSpec
     "set soft values" in {
       val scaffeine = Scaffeine().softValues()
 
-      val isSoftValues = PrivateMethod[Boolean]('isSoftValues)
-      val softValues = scaffeine.underlying invokePrivate isSoftValues()
+      val isStrongValues = PrivateMethod[Boolean]('isStrongValues)
+      val isWeakValues = PrivateMethod[Boolean]('isWeakValues)
 
-      softValues should be(true)
+      val strongValues = scaffeine.underlying invokePrivate isStrongValues()
+      val weakValues = scaffeine.underlying invokePrivate isWeakValues()
+
+      strongValues should be(false)
+      weakValues should be(false)
     }
 
     "set expire after write" in {
@@ -122,6 +126,21 @@ class ScaffeineSpec
       val expiresAfterAccessNanos = scaffeine.underlying invokePrivate getExpiresAfterAccessNanos()
 
       expiresAfterAccessNanos should be(10.minutes.toNanos)
+    }
+
+    "set expire after" in {
+      val scaffeine = Scaffeine().expireAfter(
+        create = (_: Any, _: Any) => 10.minutes,
+        update = (_: Any, _: Any, _) => 20.minutes,
+        read = (_: Any, _: Any, _) => 30.minutes
+      )
+
+      val getExpiry = PrivateMethod[Expiry[Any, Any]]('getExpiry)
+      val expiry = scaffeine.underlying invokePrivate getExpiry(false)
+
+      expiry.expireAfterCreate(null, null, 0) should be(10.minutes.toNanos)
+      expiry.expireAfterUpdate(null, null, 0, 0) should be(20.minutes.toNanos)
+      expiry.expireAfterRead(null, null, 0, 0) should be(30.minutes.toNanos)
     }
 
     "set refresh after write" in {

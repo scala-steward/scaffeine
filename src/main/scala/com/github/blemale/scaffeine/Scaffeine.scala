@@ -9,7 +9,7 @@ import com.github.benmanes.caffeine.cache.stats.StatsCounter
 import scala.collection.JavaConverters._
 import scala.compat.java8.FunctionConverters._
 import scala.compat.java8.FutureConverters._
-import scala.concurrent.duration.Duration
+import scala.concurrent.duration._
 import scala.concurrent.{ ExecutionContext, Future }
 
 object Scaffeine {
@@ -164,6 +164,35 @@ case class Scaffeine[K, V](underlying: Caffeine[K, V]) {
    */
   def expireAfterAccess(duration: Duration): Scaffeine[K, V] =
     Scaffeine(underlying.expireAfterAccess(duration.toNanos, TimeUnit.NANOSECONDS))
+
+  /**
+   * Specifies that each entry should be automatically removed from the cache once a duration has
+   * elapsed after the entry's creation, the most recent replacement of its value, or its last
+   * read.
+   *
+   * @param create the length of time an entry should be automatically removed from the cache after the entry's creation.
+   * @param update the length of time an entry should be automatically removed from the cache after the replacement of it's value.
+   * @param read   the length of time an entry should be automatically removed from the cache after the entry's last read.
+   * @tparam K1 the key type of the expiry.
+   * @tparam V1 the value type of the expiry.
+   * @return this builder instance
+   * @throws IllegalStateException if expiration was already set or used with expiresAfterAccess or expiresAfterWrite.
+   */
+  def expireAfter[K1 <: K, V1 <: V](
+    create: (K1, V1) => Duration,
+    update: (K1, V1, Duration) => Duration,
+    read: (K1, V1, Duration) => Duration
+  ): Scaffeine[K1, V1] =
+    Scaffeine(underlying.expireAfter(new Expiry[K1, V1] {
+      override def expireAfterCreate(key: K1, value: V1, currentTime: Long): Long =
+        create(key, value).toNanos
+
+      override def expireAfterUpdate(key: K1, value: V1, currentTime: Long, currentDuration: Long): Long =
+        update(key, value, currentDuration.nanos).toNanos
+
+      override def expireAfterRead(key: K1, value: V1, currentTime: Long, currentDuration: Long): Long =
+        read(key, value, currentDuration.nanos).toNanos
+    }).asInstanceOf[Caffeine[K1, V1]])
 
   /**
    * Specifies that active entries are eligible for automatic refresh once a fixed duration has
