@@ -9,7 +9,7 @@ import com.github.benmanes.caffeine.cache.stats.StatsCounter
 import scala.collection.JavaConverters._
 import scala.compat.java8.FunctionConverters._
 import scala.compat.java8.FutureConverters._
-import scala.concurrent.duration.Duration
+import scala.concurrent.duration._
 import scala.concurrent.{ ExecutionContext, Future }
 
 object Scaffeine {
@@ -179,19 +179,19 @@ case class Scaffeine[K, V](underlying: Caffeine[K, V]) {
    * @throws IllegalStateException if expiration was already set or used with expiresAfterAccess or expiresAfterWrite.
    */
   def expireAfter[K1 <: K, V1 <: V](
-    create: (K1, V1, Long) => Duration,
-    update: (K1, V1, Long, Long) => Duration,
-    read: (K1, V1, Long, Long) => Duration
+    create: (K1, V1) => Duration,
+    update: (K1, V1, Duration) => Duration,
+    read: (K1, V1, Duration) => Duration
   ): Scaffeine[K1, V1] =
     Scaffeine(underlying.expireAfter(new Expiry[K1, V1] {
       override def expireAfterCreate(key: K1, value: V1, currentTime: Long): Long =
-        create(key, value, currentTime).toNanos
+        create(key, value).toNanos
 
       override def expireAfterUpdate(key: K1, value: V1, currentTime: Long, currentDuration: Long): Long =
-        update(key, value, currentTime, currentDuration).toNanos
+        update(key, value, currentDuration.nanos).toNanos
 
       override def expireAfterRead(key: K1, value: V1, currentTime: Long, currentDuration: Long): Long =
-        read(key, value, currentTime, currentDuration).toNanos
+        read(key, value, currentDuration.nanos).toNanos
     }).asInstanceOf[Caffeine[K1, V1]])
 
   /**

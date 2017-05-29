@@ -126,9 +126,9 @@ class ScaffeineSpec
 
     "set expire after" in {
       val scaffeine = Scaffeine().expireAfter(
-        create = (_: Any, _: Any, _) => 10.minutes,
-        update = (_: Any, _: Any, _, _) => 20.minutes,
-        read = (_: Any, _: Any, _, _) => 30.minutes
+        create = (_: Any, _: Any) => 10.minutes,
+        update = (_: Any, _: Any, _) => 20.minutes,
+        read = (_: Any, _: Any, _) => 30.minutes
       )
 
       val getExpiry = PrivateMethod[Expiry[Any, Any]]('getExpiry)
