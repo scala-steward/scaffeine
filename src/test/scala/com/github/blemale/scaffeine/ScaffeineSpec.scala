@@ -82,10 +82,10 @@ class ScaffeineSpec
     "set weak keys" in {
       val scaffeine = Scaffeine().weakKeys()
 
-      val isWeakKeys = PrivateMethod[Boolean]('isWeakKeys)
-      val weakKeys = scaffeine.underlying invokePrivate isWeakKeys()
+      val isStrongKeys = PrivateMethod[Boolean]('isStrongKeys)
+      val strongKeys = scaffeine.underlying invokePrivate isStrongKeys()
 
-      weakKeys should be(true)
+      strongKeys should be(false)
     }
 
     "set weak values" in {
@@ -100,10 +100,14 @@ class ScaffeineSpec
     "set soft values" in {
       val scaffeine = Scaffeine().softValues()
 
-      val isSoftValues = PrivateMethod[Boolean]('isSoftValues)
-      val softValues = scaffeine.underlying invokePrivate isSoftValues()
+      val isStrongValues = PrivateMethod[Boolean]('isStrongValues)
+      val isWeakValues = PrivateMethod[Boolean]('isWeakValues)
 
-      softValues should be(true)
+      val strongValues = scaffeine.underlying invokePrivate isStrongValues()
+      val weakValues = scaffeine.underlying invokePrivate isWeakValues()
+
+      strongValues should be(false)
+      weakValues should be(false)
     }
 
     "set expire after write" in {
