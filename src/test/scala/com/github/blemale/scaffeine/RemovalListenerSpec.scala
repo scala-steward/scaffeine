@@ -6,8 +6,8 @@ import com.github.benmanes.caffeine.cache.RemovalCause
 import org.scalatest._
 
 class RemovalListenerSpec
-    extends WordSpec
-    with Matchers {
+  extends WordSpec
+  with Matchers {
 
   class StubListener extends ((String, String, RemovalCause) => Unit) {
     val callCounter = new AtomicInteger
