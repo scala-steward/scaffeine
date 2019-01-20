@@ -22,3 +22,5 @@ libraryDependencies ++=
     Scalactic % "test",
     Scalatest % "test"
   )
+
+scalacOptions ++= Seq("-target:jvm-1.8")
