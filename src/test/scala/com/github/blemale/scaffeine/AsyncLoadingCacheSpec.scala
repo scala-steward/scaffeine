@@ -6,10 +6,10 @@ import org.scalatest.{ Matchers, OptionValues, WordSpec }
 import scala.concurrent.Future
 
 class AsyncLoadingCacheSpec
-    extends WordSpec
-    with Matchers
-    with ScalaFutures
-    with OptionValues {
+  extends WordSpec
+  with Matchers
+  with ScalaFutures
+  with OptionValues {
 
   "AsyncLoadingCache" when {
     "created with synchronous loader" should {

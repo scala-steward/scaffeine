@@ -11,9 +11,9 @@ import scala.concurrent.duration._
 import scala.concurrent.{ ExecutionContext, Future }
 
 class ScaffeineSpec
-    extends WordSpec
-    with Matchers
-    with PrivateMethodTester {
+  extends WordSpec
+  with Matchers
+  with PrivateMethodTester {
 
   "Scaffeine" should {
     "create builder" in {

@@ -3,9 +3,9 @@ package com.github.blemale.scaffeine
 import org.scalatest._
 
 class LoadingCacheSpec
-    extends WordSpec
-    with Matchers
-    with OptionValues {
+  extends WordSpec
+  with Matchers
+  with OptionValues {
 
   "LoadingCache" should {
     "be a cache" in {

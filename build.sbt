@@ -12,7 +12,7 @@ startYear := Some(2016)
 
 homepage := Some(url("https://github.com/blemale/scaffeine"))
 
-scalaVersion := "2.11.8"
+scalaVersion := "2.11.12"
 
 libraryDependencies ++=
   Seq(

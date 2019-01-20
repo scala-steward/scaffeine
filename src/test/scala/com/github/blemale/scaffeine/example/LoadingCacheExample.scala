@@ -3,8 +3,8 @@ package com.github.blemale.scaffeine.example
 import org.scalatest.{ FlatSpec, Matchers }
 
 class LoadingCacheExample
-    extends FlatSpec
-    with Matchers {
+  extends FlatSpec
+  with Matchers {
 
   "LoadingCache" should "be created from Scaffeine builder" in {
     import com.github.blemale.scaffeine.{ LoadingCache, Scaffeine }

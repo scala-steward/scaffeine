@@ -6,9 +6,9 @@ import org.scalatest.concurrent.ScalaFutures
 import scala.concurrent.Future
 
 class AsyncLoadingCacheExample
-    extends FlatSpec
-    with Matchers
-    with ScalaFutures {
+  extends FlatSpec
+  with Matchers
+  with ScalaFutures {
 
   "AsyncLoadingCache" should "be created from Scaffeine builder with synchronous loader" in {
     import com.github.blemale.scaffeine.{ AsyncLoadingCache, Scaffeine }

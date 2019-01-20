@@ -5,9 +5,9 @@ import org.scalatest._
 import scala.concurrent.ExecutionContext
 
 class CacheSpec
-    extends WordSpec
-    with Matchers
-    with OptionValues {
+  extends WordSpec
+  with Matchers
+  with OptionValues {
 
   "Cache" should {
     "get value if present" in {

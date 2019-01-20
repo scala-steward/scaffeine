@@ -3,9 +3,9 @@ package com.github.blemale.scaffeine
 import org.scalatest._
 
 class WeigherSpec
-    extends WordSpec
-    with Matchers
-    with OptionValues {
+  extends WordSpec
+  with Matchers
+  with OptionValues {
 
   "Cache" should {
     "use weigher for calculate size based eviction" in {
