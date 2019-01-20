@@ -58,4 +58,4 @@ fixJavaLinksTask := {
   }
 }
 
-fixJavaLinksTask <<= fixJavaLinksTask triggeredBy (doc in Compile)
+fixJavaLinksTask := (fixJavaLinksTask triggeredBy (doc in Compile)).value
