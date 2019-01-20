@@ -20,6 +20,9 @@ useGpg := true
 releaseCrossBuild := true
 crossScalaVersions := Seq("2.11.12", "2.12.8")
 
+publishTo := sonatypePublishTo.value
+publishMavenStyle := true
+
 TravisCredentials.updateCredentials()
 
 pomExtra in Global := {
