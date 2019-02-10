@@ -2,8 +2,8 @@ package com.github.blemale.scaffeine
 
 import java.util.concurrent.Executor
 
+import com.github.benmanes.caffeine
 import com.github.benmanes.caffeine.cache.stats.StatsCounter
-import com.github.benmanes.caffeine.cache._
 import org.scalatest.{ Matchers, PrivateMethodTester, WordSpec }
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -23,7 +23,7 @@ class ScaffeineSpec
     }
 
     "create builder from spec" in {
-      val scaffeine: Scaffeine[Any, Any] = Scaffeine(CaffeineSpec.parse("initialCapacity=10"))
+      val scaffeine: Scaffeine[Any, Any] = Scaffeine(caffeine.cache.CaffeineSpec.parse("initialCapacity=10"))
 
       scaffeine shouldBe a[Scaffeine[_, _]]
     }
@@ -135,7 +135,7 @@ class ScaffeineSpec
         read = (_: Any, _: Any, _) => 30.minutes
       )
 
-      val getExpiry = PrivateMethod[Expiry[Any, Any]]('getExpiry)
+      val getExpiry = PrivateMethod[caffeine.cache.Expiry[Any, Any]]('getExpiry)
       val expiry = scaffeine.underlying invokePrivate getExpiry(false)
 
       expiry.expireAfterCreate(null, null, 0) should be(10.minutes.toNanos)
@@ -153,32 +153,32 @@ class ScaffeineSpec
     }
 
     "set ticker" in {
-      val scaffeine = Scaffeine().ticker(Ticker.disabledTicker())
+      val scaffeine = Scaffeine().ticker(caffeine.cache.Ticker.disabledTicker())
 
-      val getTicker = PrivateMethod[Ticker]('getTicker)
+      val getTicker = PrivateMethod[caffeine.cache.Ticker]('getTicker)
       val ticker = scaffeine.underlying invokePrivate getTicker()
 
-      ticker should be(Ticker.disabledTicker())
+      ticker should be(caffeine.cache.Ticker.disabledTicker())
     }
 
     "set removal listener" in {
       val scaffeine = Scaffeine().removalListener((_: Any, _: Any, _) => println("removed"))
 
-      val getRemovalListener = PrivateMethod[RemovalListener[Any, Any]]('getRemovalListener)
+      val getRemovalListener = PrivateMethod[caffeine.cache.RemovalListener[Any, Any]]('getRemovalListener)
       val removalListener = scaffeine.underlying invokePrivate getRemovalListener(false)
 
       removalListener shouldNot be(null)
     }
 
     "set cache writer" in {
-      val writer = new CacheWriter[Any, Any] {
+      val writer = new caffeine.cache.CacheWriter[Any, Any] {
         override def write(key: Any, value: Any): Unit = println("write")
-        override def delete(key: Any, value: Any, cause: RemovalCause): Unit = println("delete")
+        override def delete(key: Any, value: Any, cause: caffeine.cache.RemovalCause): Unit = println("delete")
       }
 
       val scaffeine = Scaffeine().writer(writer)
 
-      val getCacheWriter = PrivateMethod[CacheWriter[Any, Any]]('getCacheWriter)
+      val getCacheWriter = PrivateMethod[caffeine.cache.CacheWriter[Any, Any]]('getCacheWriter)
       val cacheWriter = scaffeine.underlying invokePrivate getCacheWriter()
 
       cacheWriter should be(writer)
