@@ -3,7 +3,7 @@ package com.github.blemale.scaffeine
 import java.util.concurrent.{ CompletableFuture, Executor, TimeUnit }
 import java.{ lang, util }
 
-import com.github.benmanes.caffeine.cache._
+import com.github.benmanes.caffeine
 import com.github.benmanes.caffeine.cache.stats.StatsCounter
 
 import scala.collection.JavaConverters._
@@ -20,7 +20,7 @@ object Scaffeine {
    * @return a new instance with default settings
    */
   def apply(): Scaffeine[Any, Any] =
-    Scaffeine(Caffeine.newBuilder().asInstanceOf[Caffeine[Any, Any]])
+    Scaffeine(caffeine.cache.Caffeine.newBuilder().asInstanceOf[caffeine.cache.Caffeine[Any, Any]])
 
   /**
    * Constructs a new `Scaffeine` instance with the settings specified in `spec`.
@@ -28,8 +28,8 @@ object Scaffeine {
    * @param spec an instance of [[com.github.benmanes.caffeine.cache.CaffeineSpec]]
    * @return a new instance with the specification's settings
    */
-  def apply(spec: CaffeineSpec): Scaffeine[Any, Any] =
-    Scaffeine(Caffeine.from(spec).asInstanceOf[Caffeine[Any, Any]])
+  def apply(spec: caffeine.cache.CaffeineSpec): Scaffeine[Any, Any] =
+    Scaffeine(caffeine.cache.Caffeine.from(spec).asInstanceOf[caffeine.cache.Caffeine[Any, Any]])
 
   /**
    * Constructs a new `Scaffeine` instance with the settings specified in `spec`.
@@ -39,10 +39,10 @@ object Scaffeine {
    * @return a new instance with the specification's settings
    */
   def apply(spec: String): Scaffeine[Any, Any] =
-    Scaffeine(Caffeine.from(spec).asInstanceOf[Caffeine[Any, Any]])
+    Scaffeine(caffeine.cache.Caffeine.from(spec).asInstanceOf[caffeine.cache.Caffeine[Any, Any]])
 }
 
-case class Scaffeine[K, V](underlying: Caffeine[K, V]) {
+case class Scaffeine[K, V](underlying: caffeine.cache.Caffeine[K, V]) {
   /**
    * Sets the minimum total size for the internal hash tables.
    *
@@ -98,7 +98,7 @@ case class Scaffeine[K, V](underlying: Caffeine[K, V]) {
    * @throws java.lang.IllegalStateException if a maximum size was already set
    */
   def weigher[K1 <: K, V1 <: V](weigher: (K1, V1) => Int) =
-    Scaffeine(underlying.weigher(new Weigher[K1, V1] {
+    Scaffeine(underlying.weigher(new caffeine.cache.Weigher[K1, V1] {
       override def weigh(key: K1, value: V1): Int = weigher(key, value)
     }))
 
@@ -183,7 +183,7 @@ case class Scaffeine[K, V](underlying: Caffeine[K, V]) {
     update: (K1, V1, Duration) => Duration,
     read: (K1, V1, Duration) => Duration
   ): Scaffeine[K1, V1] =
-    Scaffeine(underlying.expireAfter(new Expiry[K1, V1] {
+    Scaffeine(underlying.expireAfter(new caffeine.cache.Expiry[K1, V1] {
       override def expireAfterCreate(key: K1, value: V1, currentTime: Long): Long =
         create(key, value).toNanos
 
@@ -192,7 +192,7 @@ case class Scaffeine[K, V](underlying: Caffeine[K, V]) {
 
       override def expireAfterRead(key: K1, value: V1, currentTime: Long, currentDuration: Long): Long =
         read(key, value, currentDuration.nanos).toNanos
-    }).asInstanceOf[Caffeine[K1, V1]])
+    }).asInstanceOf[caffeine.cache.Caffeine[K1, V1]])
 
   /**
    * Specifies that active entries are eligible for automatic refresh once a fixed duration has
@@ -215,7 +215,7 @@ case class Scaffeine[K, V](underlying: Caffeine[K, V]) {
    * @return this builder instance
    * @throws java.lang.IllegalStateException if a ticker was already set
    */
-  def ticker(ticker: Ticker): Scaffeine[K, V] =
+  def ticker(ticker: caffeine.cache.Ticker): Scaffeine[K, V] =
     Scaffeine(underlying.ticker(ticker))
 
   /**
@@ -229,9 +229,9 @@ case class Scaffeine[K, V](underlying: Caffeine[K, V]) {
    * @return this builder instance
    * @throws java.lang.IllegalStateException if a removal listener was already set
    */
-  def removalListener[K1 <: K, V1 <: V](removalListener: (K1, V1, RemovalCause) => Unit): Scaffeine[K1, V1] =
-    Scaffeine(underlying.removalListener(new RemovalListener[K1, V1] {
-      override def onRemoval(key: K1, value: V1, cause: RemovalCause): Unit = removalListener(key, value, cause)
+  def removalListener[K1 <: K, V1 <: V](removalListener: (K1, V1, caffeine.cache.RemovalCause) => Unit): Scaffeine[K1, V1] =
+    Scaffeine(underlying.removalListener(new caffeine.cache.RemovalListener[K1, V1] {
+      override def onRemoval(key: K1, value: V1, cause: caffeine.cache.RemovalCause): Unit = removalListener(key, value, cause)
     }))
 
   /**
@@ -247,7 +247,7 @@ case class Scaffeine[K, V](underlying: Caffeine[K, V]) {
    * @return this builder instance
    * @throws java.lang.IllegalStateException if a writer was already set or if the key strength is weak
    */
-  def writer[K1 <: K, V1 <: V](writer: CacheWriter[K1, V1]): Scaffeine[K1, V1] =
+  def writer[K1 <: K, V1 <: V](writer: caffeine.cache.CacheWriter[K1, V1]): Scaffeine[K1, V1] =
     Scaffeine(underlying.writer(writer))
 
   /**
@@ -368,7 +368,7 @@ case class Scaffeine[K, V](underlying: Caffeine[K, V]) {
     loader: K1 => V1,
     allLoader: Option[Iterable[K1] => Map[K1, V1]] = None,
     reloadLoader: Option[(K1, V1) => V1] = None
-  ): CacheLoader[K1, V1] = allLoader match {
+  ): caffeine.cache.CacheLoader[K1, V1] = allLoader match {
     case Some(l) =>
       new CacheLoaderAdapter[K1, V1](loader, reloadLoader) {
         override def loadAll(keys: lang.Iterable[_ <: K1]): util.Map[K1, V1] =
@@ -385,7 +385,7 @@ case class Scaffeine[K, V](underlying: Caffeine[K, V]) {
   )(
     implicit
     ec: ExecutionContext
-  ): AsyncCacheLoader[K1, V1] = allLoader match {
+  ): caffeine.cache.AsyncCacheLoader[K1, V1] = allLoader match {
     case Some(l) =>
       new AsyncCacheLoaderAdapter[K1, V1](loader, reloadLoader) {
         override def asyncLoadAll(keys: lang.Iterable[_ <: K1], executor: Executor): CompletableFuture[util.Map[K1, V1]] =
