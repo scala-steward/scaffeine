@@ -101,7 +101,7 @@ So this is the thinner wrapper we can came with to make Caffeine easy and idioma
 Download from [Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.blemale/scaffeine_2.11) or depend via SBT:
 
 ```sbt
-"com.github.blemale" %% "scaffeine" % "2.5.0" % "compile"
+"com.github.blemale" %% "scaffeine" % "2.6.0" % "compile"
 ```
 
 Snapshots of the development version are available in
