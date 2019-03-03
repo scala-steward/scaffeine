@@ -307,6 +307,20 @@ case class Scaffeine[K, V](underlying: caffeine.cache.Caffeine[K, V]) {
     ))
 
   /**
+   * Builds a cache which does not automatically load values when keys are requested unless a
+   * mapping function is provided. The returned [[scala.concurrent.Future]] may be already loaded or
+   * currently computing the value for a given key. If the asynchronous computation fails
+   * value then the entry will be automatically removed. Note that multiple
+   * threads can concurrently load values for distinct keys.
+   *
+   * @tparam K1 the key type of the cache
+   * @tparam V1 the value type of the cache
+   * @return a cache having the requested features
+   */
+  def buildAsync[K1 <: K, V1 <: V](): AsyncCache[K1, V1] =
+    AsyncCache(underlying.buildAsync[K1, V1]())
+
+  /**
    * Builds a cache, which either returns a [[scala.concurrent.Future]] already loaded or currently
    * computing the value for a given key, or atomically computes the value asynchronously through a
    * supplied mapping function or the supplied `loader`. If the asynchronous computation
