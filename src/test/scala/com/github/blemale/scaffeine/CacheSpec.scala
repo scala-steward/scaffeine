@@ -23,8 +23,8 @@ class CacheSpec
       val cache = Scaffeine().build[String, String]()
       cache.put("foo", "present")
 
-      val present = cache.get("foo", key => "computed")
-      val computed = cache.get("bar", key => "computed")
+      val present = cache.get("foo", _ => "computed")
+      val computed = cache.get("bar", _ => "computed")
 
       present should be("present")
       computed should be("computed")

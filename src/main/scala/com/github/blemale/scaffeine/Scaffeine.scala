@@ -377,8 +377,8 @@ case class Scaffeine[K, V](underlying: caffeine.cache.Caffeine[K, V]) {
 
   private[this] def toCacheLoader[K1 <: K, V1 <: V](
     loader: K1 => V1,
-    allLoader: Option[Iterable[K1] => Map[K1, V1]] = None,
-    reloadLoader: Option[(K1, V1) => V1] = None
+    allLoader: Option[Iterable[K1] => Map[K1, V1]],
+    reloadLoader: Option[(K1, V1) => V1]
   ): caffeine.cache.CacheLoader[K1, V1] = allLoader match {
     case Some(l) =>
       new CacheLoaderAdapter[K1, V1](loader, reloadLoader) {
@@ -391,8 +391,8 @@ case class Scaffeine[K, V](underlying: caffeine.cache.Caffeine[K, V]) {
 
   private[this] def toAsyncCacheLoader[K1 <: K, V1 <: V](
     loader: K1 => Future[V1],
-    allLoader: Option[Iterable[K1] => Future[Map[K1, V1]]] = None,
-    reloadLoader: Option[(K1, V1) => Future[V1]] = None
+    allLoader: Option[Iterable[K1] => Future[Map[K1, V1]]],
+    reloadLoader: Option[(K1, V1) => Future[V1]]
   ): caffeine.cache.AsyncCacheLoader[K1, V1] = allLoader match {
     case Some(l) =>
       new AsyncCacheLoaderAdapter[K1, V1](loader, reloadLoader) {

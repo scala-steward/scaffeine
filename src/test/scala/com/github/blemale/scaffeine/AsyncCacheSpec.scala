@@ -27,8 +27,8 @@ class AsyncCacheSpec
       val cache = Scaffeine().buildAsync[String, String]()
 
       cache.put("foo", Future.successful("present"))
-      val fooValue = cache.get("foo", k => "computed")
-      val barValue = cache.get("bar", k => "computed")
+      val fooValue = cache.get("foo", _ => "computed")
+      val barValue = cache.get("bar", _ => "computed")
 
       fooValue.futureValue should be("present")
       barValue.futureValue should be("computed")
@@ -38,8 +38,8 @@ class AsyncCacheSpec
       val cache = Scaffeine().buildAsync[String, String]()
 
       cache.put("foo", Future.successful("present"))
-      val fooValue = cache.getFuture("foo", k => Future.successful("computed"))
-      val barValue = cache.getFuture("bar", k => Future.successful("computed"))
+      val fooValue = cache.getFuture("foo", _ => Future.successful("computed"))
+      val barValue = cache.getFuture("bar", _ => Future.successful("computed"))
 
       fooValue.futureValue should be("present")
       barValue.futureValue should be("computed")

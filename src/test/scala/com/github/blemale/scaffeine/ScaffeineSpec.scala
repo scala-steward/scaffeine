@@ -218,8 +218,8 @@ class ScaffeineSpec
         Scaffeine()
           .build[Int, Int](
             loader = (key: Int) => key + 1,
-            allLoader = Some((keys: Iterable[Int]) => keys.map(i => (i -> (i + 1))).toMap),
-            reloadLoader = Some((key: Int, old: Int) => key + 1)
+            allLoader = Some((keys: Iterable[Int]) => keys.map(i => i -> (i + 1)).toMap),
+            reloadLoader = Some((key: Int, _: Int) => key + 1)
           )
 
       cache shouldBe a[LoadingCache[_, _]]
@@ -236,8 +236,8 @@ class ScaffeineSpec
         Scaffeine()
           .buildAsync[Int, Int](
             loader = (key: Int) => key + 1,
-            allLoader = Some((keys: Iterable[Int]) => keys.map(i => (i -> (i + 1))).toMap),
-            reloadLoader = Some((key: Int, old: Int) => key + 1)
+            allLoader = Some((keys: Iterable[Int]) => keys.map(i => i -> (i + 1)).toMap),
+            reloadLoader = Some((key: Int, _: Int) => key + 1)
           )
 
       cache shouldBe a[AsyncLoadingCache[_, _]]
@@ -254,8 +254,8 @@ class ScaffeineSpec
         Scaffeine()
           .buildAsyncFuture[Int, Int](
             loader = (key: Int) => Future.successful(key + 1),
-            allLoader = Some((keys: Iterable[Int]) => Future.successful(keys.map(i => (i -> (i + 1))).toMap)),
-            reloadLoader = Some((key: Int, old: Int) => Future.successful(key + 1))
+            allLoader = Some((keys: Iterable[Int]) => Future.successful(keys.map(i => i -> (i + 1)).toMap)),
+            reloadLoader = Some((key: Int, _: Int) => Future.successful(key + 1))
           )
 
       cache shouldBe a[AsyncLoadingCache[_, _]]

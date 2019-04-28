@@ -12,8 +12,9 @@ class RemovalListenerSpec
   class StubListener extends ((String, String, RemovalCause) => Unit) {
     val callCounter = new AtomicInteger
 
-    override def apply(key: String, value: String, cause: RemovalCause): Unit =
-      callCounter.incrementAndGet()
+    override def apply(key: String, value: String, cause: RemovalCause): Unit = {
+      val _ = callCounter.incrementAndGet()
+    }
   }
 
   "Cache" should {
