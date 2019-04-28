@@ -2,8 +2,6 @@ package com.github.blemale.scaffeine
 
 import org.scalatest._
 
-import scala.concurrent.ExecutionContext
-
 class CacheSpec
   extends WordSpec
   with Matchers
