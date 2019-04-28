@@ -1,7 +1,7 @@
 package com.github.blemale.scaffeine.example
 
-import org.scalatest.{ FlatSpec, Matchers }
 import org.scalatest.concurrent.ScalaFutures
+import org.scalatest.{ FlatSpec, Matchers }
 
 import scala.concurrent.Future
 
@@ -12,6 +12,7 @@ class AsyncLoadingCacheExample
 
   "AsyncLoadingCache" should "be created from Scaffeine builder with synchronous loader" in {
     import com.github.blemale.scaffeine.{ AsyncLoadingCache, Scaffeine }
+
     import scala.concurrent.duration._
 
     val cache: AsyncLoadingCache[Int, String] =
@@ -28,8 +29,8 @@ class AsyncLoadingCacheExample
 
   "AsyncLoadingCache" should "be created from Scaffeine builder with asynchronous loader" in {
     import com.github.blemale.scaffeine.{ AsyncLoadingCache, Scaffeine }
+
     import scala.concurrent.duration._
-    import scala.concurrent.ExecutionContext.Implicits.global
 
     val cache: AsyncLoadingCache[Int, String] =
       Scaffeine()

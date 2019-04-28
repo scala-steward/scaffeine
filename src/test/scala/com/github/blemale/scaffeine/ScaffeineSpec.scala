@@ -6,7 +6,6 @@ import com.github.benmanes.caffeine
 import com.github.benmanes.caffeine.cache.stats.StatsCounter
 import org.scalatest.{ Matchers, PrivateMethodTester, WordSpec }
 
-import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 import scala.concurrent.{ ExecutionContext, Future }
 

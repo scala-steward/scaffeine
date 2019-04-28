@@ -57,7 +57,6 @@ class AsyncLoadingCacheSpec
 
     "created with asynchronous loader" should {
       "get or load value" in {
-        import scala.concurrent.ExecutionContext.Implicits.global
         val cache = Scaffeine().buildAsyncFuture[String, String]((key: String) => Future.successful("loaded"))
 
         cache.put("foo", Future.successful("present"))
@@ -69,7 +68,6 @@ class AsyncLoadingCacheSpec
       }
 
       "get or load all given values" in {
-        import scala.concurrent.ExecutionContext.Implicits.global
         val cache = Scaffeine().buildAsyncFuture[String, String]((key: String) => Future.successful("loaded"))
 
         cache.put("foo", Future.successful("present"))
@@ -79,7 +77,6 @@ class AsyncLoadingCacheSpec
       }
 
       "get or bulk load all given values" in {
-        import scala.concurrent.ExecutionContext.Implicits.global
         val cache = Scaffeine().buildAsyncFuture[String, String](
           (key: String) => Future.successful("loaded"),
           allLoader = Some((keys: Iterable[String]) => Future.successful(keys.map(_ -> "bulked").toMap))

@@ -4,7 +4,7 @@ import com.github.benmanes.caffeine.cache.{ AsyncLoadingCache => CaffeineAsyncLo
 
 import scala.collection.JavaConverters._
 import scala.compat.java8.FutureConverters._
-import scala.concurrent.Future
+import scala.concurrent.{ ExecutionContext, Future }
 
 object AsyncLoadingCache {
   def apply[K, V](asyncLoadingCache: CaffeineAsyncLoadingCache[K, V]): AsyncLoadingCache[K, V] =
@@ -12,7 +12,7 @@ object AsyncLoadingCache {
 }
 
 class AsyncLoadingCache[K, V](override val underlying: CaffeineAsyncLoadingCache[K, V]) extends AsyncCache[K, V](underlying) {
-  private[this] implicit val ec = DirectExecutionContext
+  private[this] implicit val ec: ExecutionContext = DirectExecutionContext
 
   /**
    * Returns the future associated with `key` in this cache, obtaining that value from
