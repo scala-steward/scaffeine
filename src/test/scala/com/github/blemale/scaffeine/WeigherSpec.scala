@@ -11,7 +11,7 @@ class WeigherSpec
     "use weigher for calculate size based eviction" in {
       val cache = Scaffeine()
         .executor(DirectExecutor)
-        .weigher[String, String]((key, value) => value.length)
+        .weigher[String, String]((_, value) => value.length)
         .maximumWeight(10)
         .build[String, String]()
 
