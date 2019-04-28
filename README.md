@@ -61,6 +61,8 @@ So this is the thinner wrapper we can came with to make Caffeine easy and idioma
 
 ### AsyncLoadingCache
 
+https://github.com/blemale/scaffeine/blob/e1ab7a1d6217f767bb900c77172368691ca3aecd/src/test/scala/com/github/blemale/scaffeine/example/AsyncLoadingCacheExample.scala#L13-L28
+
 ```scala
  "AsyncLoadingCache" should "be created from Scaffeine builder with synchronous loader" in {
     import com.github.blemale.scaffeine.{ AsyncLoadingCache, Scaffeine }
