@@ -1,13 +1,15 @@
 package com.github.blemale.scaffeine.example
 
-import org.scalatest.{ FlatSpec, Matchers }
+import org.scalatest.Matchers
+import org.scalatest.flatspec.AnyFlatSpec
 
 class LoadingCacheExample
-  extends FlatSpec
+  extends AnyFlatSpec
   with Matchers {
 
   "LoadingCache" should "be created from Scaffeine builder" in {
     import com.github.blemale.scaffeine.{ LoadingCache, Scaffeine }
+
     import scala.concurrent.duration._
 
     val cache: LoadingCache[Int, String] =
