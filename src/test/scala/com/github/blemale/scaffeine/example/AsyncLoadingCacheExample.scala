@@ -1,12 +1,13 @@
 package com.github.blemale.scaffeine.example
 
+import org.scalatest.Matchers
 import org.scalatest.concurrent.ScalaFutures
-import org.scalatest.{ FlatSpec, Matchers }
+import org.scalatest.flatspec.AnyFlatSpec
 
 import scala.concurrent.Future
 
 class AsyncLoadingCacheExample
-  extends FlatSpec
+  extends AnyFlatSpec
   with Matchers
   with ScalaFutures {
 
