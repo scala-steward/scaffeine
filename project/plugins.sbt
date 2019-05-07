@@ -10,4 +10,4 @@ addSbtPlugin("org.xerial.sbt" % "sbt-sonatype" % "2.4")
 
 addSbtPlugin("io.get-coursier" % "sbt-coursier" % "1.0.3")
 
-addSbtPlugin("com.timushev.sbt" % "sbt-updates" % "0.3.4")
+addSbtPlugin("com.timushev.sbt" % "sbt-updates" % "0.4.0")
