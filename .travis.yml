@@ -1,12 +1,36 @@
 language: scala
+
 scala:
 - 2.11.7
+
 jdk:
 - oraclejdk8
-script: "sbt clean coverage +test"
-after_success:
-- "sbt coverageReport coveralls"
-- "[[ $TRAVIS_BRANCH == \"master\" ]] && [[ $TRAVIS_PULL_REQUEST == \"false\" ]] && { sbt +publish; };"
+
+cache:
+  directories:
+    - $HOME/.ivy2/cache
+    - $HOME/.sbt
+    - $HOME/.cache/coursier
+
+before_cache:
+  # Cleanup the cached directories to avoid unnecessary cache updates
+  - rm -fv $HOME/.ivy2/.sbt.ivy.lock
+  - find $HOME/.ivy2/cache -name "ivydata-*.properties" -print -delete
+  - find $HOME/.sbt        -name "*.lock"               -print -delete
+
+
+stages:
+  - name: test
+  - name: publish
+    if: (branch = master AND type = push) AND NOT fork
+
+jobs:
+  include:
+    - stage: test
+      script: sbt clean coverage +test && sbt coverageReport coveralls
+    - stage: publish
+      script: sbt +publish
+
 env:
   global:
   - secure: R+RZTi0LB07yxKnPSLF4DGsGpORTGoGrtKEM1fT0ESwiJqC4J33lW/wpJ8WOS0knMySH4RM+pI8BbWmgk4wN/+rHjS/fNoo4gJ6TBJ0rFPRy7j1KOX/8YJjoPxVxQazaKpgkXJEndGMAoQQuq+0/NVAWGeb11wNsh5EzjIz2txMFsEAy+/ZZYcG/ec4GZNPRPG5kHxq6Cja/SzhGXc3JPjnPAhQCde7dlMzGJEad1m2o8eQabnO2/EUuj2PJzf6sYctGkbBJb9GIYU2homRrBha0v0di4CqXTRpI/2qHRhgYXhf7rnZO2amOMEkpE0QaWTAYj3aBxn0e6JGnfBd56ByuumNLIWJtGPe8n7UExUB8WrXOyUzWLM8WWAXGHx5aQnu7/eZvpGTR4xaY7zbcrPFP5lbiYrZfD7PMcjVCNuRBnyaukoLOx5EBXc5LoAREJpeRYcoFhlZC9KNNVgqf29F1GdtzGekUOIunA8Rqm4HVEqZaBhfaewFuviyx9tw2yV7VDFFtHLyHYxr4E28l0QqDEC1plaL6Vo7nhykDzyd8ZdVq4zdp2SudiCb3l+sEETEhK9P3l231kBiGr5j8O+t/WDsfsz6krTznKyRQ+enRZ7m/gUjCg4ErlNq87blXAmG0s74BfQ4mih14CuJgl9jInlbRbmBjxXqQwdprmwM=
