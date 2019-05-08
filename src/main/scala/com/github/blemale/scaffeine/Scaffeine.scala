@@ -118,7 +118,7 @@ case class Scaffeine[K, V](underlying: caffeine.cache.Caffeine[K, V]) {
    * Specifies that each value (not key) stored in the cache should be wrapped in a
    * [[java.lang.ref.WeakReference]] (by default, strong references are used).
    * <p>
-   * This feature cannot be used in conjunction with [[Scaffeine.buildAsync]].
+   * This feature cannot be used in conjunction with [[Scaffeine.buildAsync[K1<:K,V1<:V]()*]].
    *
    * @return this builder instance
    * @throws java.lang.IllegalStateException if the value strength was already set
@@ -130,7 +130,7 @@ case class Scaffeine[K, V](underlying: caffeine.cache.Caffeine[K, V]) {
    * Specifies that each value (not key) stored in the cache should be wrapped in a
    * [[java.lang.ref.SoftReference]] (by default, strong references are used).
    * <p>
-   * This feature cannot be used in conjunction with [[Scaffeine.buildAsync]].
+   * This feature cannot be used in conjunction with [[Scaffeine.buildAsync[K1<:K,V1<:V]()*]].
    *
    * @return this builder instance
    * @throws java.lang.IllegalStateException if the value strength was already set
@@ -176,7 +176,7 @@ case class Scaffeine[K, V](underlying: caffeine.cache.Caffeine[K, V]) {
    * @tparam K1 the key type of the expiry.
    * @tparam V1 the value type of the expiry.
    * @return this builder instance
-   * @throws IllegalStateException if expiration was already set or used with expiresAfterAccess or expiresAfterWrite.
+   * @throws java.lang.IllegalStateException if expiration was already set or used with expiresAfterAccess or expiresAfterWrite.
    */
   def expireAfter[K1 <: K, V1 <: V](
     create: (K1, V1) => Duration,
@@ -238,7 +238,7 @@ case class Scaffeine[K, V](underlying: caffeine.cache.Caffeine[K, V]) {
    * Specifies a writer instance that caches should notify each time an entry is explicitly created
    * or modified, or removed for any [[com.github.benmanes.caffeine.cache.RemovalCause]].
    * <p>
-   * This feature cannot be used in conjunction with [[Scaffeine.weakKeys]] or [[Scaffeine.buildAsync]].
+   * This feature cannot be used in conjunction with [[Scaffeine.weakKeys]] or [[Scaffeine.buildAsync[K1<:K,V1<:V]()*]].
    *
    * @param writer a writer instance that caches should notify each time an entry is explicitly
    *               created or modified, or removed for any reason
