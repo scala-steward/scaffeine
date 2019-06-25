@@ -1,9 +1,10 @@
 package com.github.blemale.scaffeine
 
 import org.scalatest._
+import org.scalatest.wordspec.AnyWordSpec
 
 class WeigherSpec
-  extends WordSpec
+  extends AnyWordSpec
   with Matchers
   with OptionValues {
 
