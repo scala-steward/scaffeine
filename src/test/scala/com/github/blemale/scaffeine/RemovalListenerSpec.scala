@@ -3,10 +3,11 @@ package com.github.blemale.scaffeine
 import java.util.concurrent.atomic.AtomicInteger
 
 import com.github.benmanes.caffeine.cache.RemovalCause
+import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest._
 
 class RemovalListenerSpec
-  extends WordSpec
+  extends AnyWordSpec
   with Matchers {
 
   class StubListener extends ((String, String, RemovalCause) => Unit) {
