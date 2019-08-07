@@ -287,7 +287,7 @@ case class Scaffeine[K, V](underlying: caffeine.cache.Caffeine[K, V]) {
    * value. Note that multiple threads can concurrently load values for distinct keys.
    *
    * @param loader the loader used to obtain new values
-   * @param allLoader the loader used to obtain new values in bulk, called by [[LoadingCache.getAll]]
+   * @param allLoader the loader used to obtain new values in bulk, called by [[LoadingCache.getAll(keys:Iterable[K])*]]
    * @param reloadLoader the loader used to obtain already-cached values
    * @tparam K1 the key type of the loader
    * @tparam V1 the value type of the loader
@@ -328,7 +328,7 @@ case class Scaffeine[K, V](underlying: caffeine.cache.Caffeine[K, V]) {
    * concurrently load values for distinct keys.
    *
    * @param loader the loader used to obtain new values
-   * @param allLoader the loader used to obtain new values in bulk, called by [[AsyncLoadingCache.getAll]]
+   * @param allLoader the loader used to obtain new values in bulk, called by [[AsyncLoadingCache.getAll(keys:Iterable[K])*]]
    * @param reloadLoader the loader used to obtain already-cached values
    * @tparam K1 the key type of the loader
    * @tparam V1 the value type of the loader
@@ -356,7 +356,7 @@ case class Scaffeine[K, V](underlying: caffeine.cache.Caffeine[K, V]) {
    * Note that multiple threads can concurrently load values for distinct keys.
    *
    * @param loader the loader used to obtain new values
-   * @param allLoader the loader used to obtain new values in bulk, called by [[AsyncLoadingCache.getAll]]
+   * @param allLoader the loader used to obtain new values in bulk, called by [[AsyncLoadingCache.getAll(keys:Iterable[K])*]]
    * @param reloadLoader the loader used to obtain already-cached values
    * @tparam K1 the key type of the loader
    * @tparam V1 the value type of the loader

@@ -41,6 +41,15 @@ class CacheSpec
       keyValues should contain only ("foo" -> "present", "bar" -> "present")
     }
 
+    "get or compute all values" in {
+      val cache = Scaffeine().build[String, String]()
+      cache.put("foo", "present")
+
+      val keyValues = cache.getAll(List("foo", "bar"), _.map(key => (key, "computed")).toMap)
+
+      keyValues should contain only ("foo" -> "present", "bar" -> "computed")
+    }
+
     "put value" in {
       val cache = Scaffeine().build[String, String]()
 

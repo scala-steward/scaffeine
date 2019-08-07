@@ -1,7 +1,7 @@
 package com.github.blemale.scaffeine
 
 import com.github.benmanes.caffeine.cache.stats.CacheStats
-import com.github.benmanes.caffeine.cache.{ Cache => CaffeineCache, Policy }
+import com.github.benmanes.caffeine.cache.{ Policy, Cache => CaffeineCache }
 
 import scala.collection.JavaConverters._
 import scala.compat.java8.FunctionConverters._
@@ -48,6 +48,26 @@ class Cache[K, V](val underlying: CaffeineCache[K, V]) {
    */
   def getAllPresent(keys: Iterable[K]): Map[K, V] =
     underlying.getAllPresent(keys.asJava).asScala.toMap
+
+  /**
+   * Returns the future of a map of the values associated with `keys`, creating or retrieving
+   * those values if necessary. The returned map contains entries that were already cached, combined
+   * with newly loaded entries.
+   *
+   * A single request to the `mappingFunction` is performed for all keys which are not already
+   * present in the cache.
+   *
+   * @param keys the keys whose associated values are to be returned
+   * @param mappingFunction the function to compute the values
+   * @return an unmodifiable mapping of keys to values for the specified keys in this cache
+   * @throws java.lang.RuntimeException or Error if the mappingFunction does so, in which
+   *                                        case the mapping is left unestablished
+   */
+  def getAll(keys: Iterable[K], mappingFunction: Iterable[K] => Map[K, V]): Map[K, V] =
+    underlying.getAll(
+      keys.asJava,
+      asJavaFunction((ks: java.lang.Iterable[_ <: K]) => mappingFunction(ks.asScala).asJava)
+    ).asScala.toMap
 
   /**
    * Associates `value` with `key` in this cache. If the cache previously contained a

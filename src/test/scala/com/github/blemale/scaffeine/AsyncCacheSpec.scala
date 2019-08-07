@@ -46,6 +46,24 @@ class AsyncCacheSpec
       barValue.futureValue should be("computed")
     }
 
+    "get or compute all values" in {
+      val cache = Scaffeine().buildAsync[String, String]()
+
+      cache.put("foo", Future.successful("present"))
+      val values = cache.getAll(List("foo", "bar"), _.map(key => (key, "computed")).toMap)
+
+      values.futureValue should contain only ("foo" -> "present", "bar" -> "computed")
+    }
+
+    "get or compute async all values" in {
+      val cache = Scaffeine().buildAsync[String, String]()
+
+      cache.put("foo", Future.successful("present"))
+      val values = cache.getAllFuture(List("foo", "bar"), keys => Future.successful(keys.map(key => (key, "computed")).toMap))
+
+      values.futureValue should contain only ("foo" -> "present", "bar" -> "computed")
+    }
+
     "put value" in {
       val cache = Scaffeine().buildAsync[String, String]()
 
