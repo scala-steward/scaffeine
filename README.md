@@ -1,4 +1,4 @@
-[![Build Status](https://img.shields.io/travis/blemale/scaffeine.svg?style=flat-square)](https://travis-ci.org/blemale/scaffeine)
+[![Build Status](https://img.shields.io/travis/blemale/scaffeine/master.svg?style=flat-square)](https://travis-ci.org/blemale/scaffeine.svg?branch=master)
 [![Coverage Status](https://img.shields.io/coveralls/blemale/scaffeine.svg?style=flat-square)](https://coveralls.io/github/blemale/scaffeine?branch=master)
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.blemale/scaffeine_2.11.svg?style=flat-square)](https://maven-badges.herokuapp.com/maven-central/com.github.blemale/scaffeine_2.11)
 [![License](https://img.shields.io/:license-apache-brightgreen.svg?style=flat-square)](http://www.apache.org/licenses/LICENSE-2.0.html)
