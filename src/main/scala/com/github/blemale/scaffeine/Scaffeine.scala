@@ -4,6 +4,7 @@ import java.util.concurrent.{ CompletableFuture, Executor, TimeUnit }
 import java.{ lang, util }
 
 import com.github.benmanes.caffeine
+import com.github.benmanes.caffeine.cache.Scheduler
 import com.github.benmanes.caffeine.cache.stats.StatsCounter
 
 import scala.collection.JavaConverters._
@@ -267,8 +268,20 @@ case class Scaffeine[K, V](underlying: caffeine.cache.Caffeine[K, V]) {
    *                             [[com.github.benmanes.caffeine.cache.stats.StatsCounter]]
    * @return this builder instance
    */
-  def recordStats[C <: StatsCounter](statsCounterSupplier: () => C) =
+  def recordStats[C <: StatsCounter](statsCounterSupplier: () => C): Scaffeine[K, V] =
     Scaffeine(underlying.recordStats(asJavaSupplier(statsCounterSupplier)))
+
+  /**
+   * Specifies the scheduler to use when scheduling routine maintenance based on an expiration
+   * event. This augments the periodic maintenance that occurs during normal cache operations to
+   * allow for the prompt removal of expired entries regardless of whether any cache activity is
+   * occurring at that time. By default the scheduler is disabled.
+   *
+   * @param scheduler the scheduler that submits a task to the [[Scaffeine.executor*]] after a given delay
+   * @return this builder instance
+   */
+  def scheduler(scheduler: Scheduler) =
+    Scaffeine(underlying.scheduler(scheduler))
 
   /**
    * Builds a cache which does not automatically load values when keys are requested.
@@ -287,7 +300,7 @@ case class Scaffeine[K, V](underlying: caffeine.cache.Caffeine[K, V]) {
    * value. Note that multiple threads can concurrently load values for distinct keys.
    *
    * @param loader the loader used to obtain new values
-   * @param allLoader the loader used to obtain new values in bulk, called by [[LoadingCache.getAll]]
+   * @param allLoader the loader used to obtain new values in bulk, called by [[LoadingCache.getAll(keys:Iterable[K])*]]
    * @param reloadLoader the loader used to obtain already-cached values
    * @tparam K1 the key type of the loader
    * @tparam V1 the value type of the loader
@@ -328,7 +341,7 @@ case class Scaffeine[K, V](underlying: caffeine.cache.Caffeine[K, V]) {
    * concurrently load values for distinct keys.
    *
    * @param loader the loader used to obtain new values
-   * @param allLoader the loader used to obtain new values in bulk, called by [[AsyncLoadingCache.getAll]]
+   * @param allLoader the loader used to obtain new values in bulk, called by [[AsyncLoadingCache.getAll(keys:Iterable[K])*]]
    * @param reloadLoader the loader used to obtain already-cached values
    * @tparam K1 the key type of the loader
    * @tparam V1 the value type of the loader
@@ -356,7 +369,7 @@ case class Scaffeine[K, V](underlying: caffeine.cache.Caffeine[K, V]) {
    * Note that multiple threads can concurrently load values for distinct keys.
    *
    * @param loader the loader used to obtain new values
-   * @param allLoader the loader used to obtain new values in bulk, called by [[AsyncLoadingCache.getAll]]
+   * @param allLoader the loader used to obtain new values in bulk, called by [[AsyncLoadingCache.getAll(keys:Iterable[K])*]]
    * @param reloadLoader the loader used to obtain already-cached values
    * @tparam K1 the key type of the loader
    * @tparam V1 the value type of the loader
