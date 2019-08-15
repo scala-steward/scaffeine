@@ -1,5 +1,3 @@
-import Dependencies.CaffeineVersion
-
 import scala.util.control.NonFatal
 import scala.util.matching.Regex.Match
 
@@ -21,7 +19,7 @@ apiMappings ++= {
 
   Map(
     bootClasspath.find(_.getPath.endsWith("rt.jar")).get -> url("http://docs.oracle.com/javase/8/docs/api/"),
-    findManagedDependency("com.github.ben-manes.caffeine", "caffeine") -> url(s"http://static.javadoc.io/com.github.ben-manes.caffeine/caffeine/$CaffeineVersion/")
+    findManagedDependency("com.github.ben-manes.caffeine", "caffeine") -> url(s"http://static.javadoc.io/com.github.ben-manes.caffeine/caffeine/${CaffeineVersion.value}/")
   )
 }
 
@@ -30,7 +28,7 @@ lazy val fixJavaLinksTask = taskKey[Unit](
 )
 
 val jdkApiLink = """\"(http://docs\.oracle\.com/javase/8/docs/api/index\.html)#([^"]*)\"""".r
-val caffeineApiLink = ("""\"(http://static\.javadoc\.io/com\.github\.ben-manes\.caffeine/caffeine/""" + CaffeineVersion.replace(".", "\\.") + """/)index\.html#([^"]*)\"""").r
+val caffeineApiLink = ("""\"(http://static\.javadoc\.io/com\.github\.ben-manes\.caffeine/caffeine/""" + CaffeineVersion.value.replace(".", "\\.") + """/)index\.html#([^"]*)\"""").r
 
 def hasJavadocLink(f: File): Boolean = {
   val content = IO.read(f)
