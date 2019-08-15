@@ -1,5 +1,3 @@
-import Dependencies._
-
 name := "scaffeine"
 
 organization := "com.github.blemale"
@@ -16,11 +14,11 @@ scalaVersion := "2.11.12"
 
 libraryDependencies ++=
   Seq(
-    Caffeine,
-    Java8Compat,
-    Jsr305 % "provided",
-    Scalactic % "test",
-    Scalatest % "test"
+      "com.github.ben-manes.caffeine" % "caffeine" % CaffeineVersion.value,
+      "org.scala-lang.modules" %% "scala-java8-compat" % "0.9.0",
+      "com.google.code.findbugs" % "jsr305" % "3.0.2" % "provided",
+      "org.scalactic" %% "scalactic" % "3.1.0-SNAP13" % "test",
+      "org.scalatest" %% "scalatest" % "3.1.0-SNAP13" % "test"
   )
 
 scalacOptions ++= Seq("-target:jvm-1.8")
