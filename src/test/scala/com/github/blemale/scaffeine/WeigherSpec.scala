@@ -2,6 +2,7 @@ package com.github.blemale.scaffeine
 
 import org.scalatest._
 import org.scalatest.wordspec.AnyWordSpec
+import org.scalatest.matchers.should.Matchers
 
 class WeigherSpec
   extends AnyWordSpec
