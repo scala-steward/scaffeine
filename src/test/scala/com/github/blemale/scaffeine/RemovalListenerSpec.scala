@@ -3,8 +3,8 @@ package com.github.blemale.scaffeine
 import java.util.concurrent.atomic.AtomicInteger
 
 import com.github.benmanes.caffeine.cache.RemovalCause
+import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
-import org.scalatest._
 
 class RemovalListenerSpec
   extends AnyWordSpec

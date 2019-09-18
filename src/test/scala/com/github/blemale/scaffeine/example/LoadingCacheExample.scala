@@ -1,7 +1,7 @@
 package com.github.blemale.scaffeine.example
 
-import org.scalatest.Matchers
 import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 
 class LoadingCacheExample
   extends AnyFlatSpec

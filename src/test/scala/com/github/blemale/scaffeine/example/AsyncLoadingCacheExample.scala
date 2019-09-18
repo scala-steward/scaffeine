@@ -1,8 +1,8 @@
 package com.github.blemale.scaffeine.example
 
-import org.scalatest.Matchers
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 
 import scala.concurrent.Future
 
