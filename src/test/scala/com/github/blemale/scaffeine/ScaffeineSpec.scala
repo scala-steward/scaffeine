@@ -5,7 +5,8 @@ import java.util.concurrent.Executor
 import com.github.benmanes.caffeine
 import com.github.benmanes.caffeine.cache.Scheduler
 import com.github.benmanes.caffeine.cache.stats.StatsCounter
-import org.scalatest.{ Matchers, PrivateMethodTester }
+import org.scalatest.PrivateMethodTester
+import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
 import scala.concurrent.duration._
