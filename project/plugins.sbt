@@ -10,6 +10,6 @@ addSbtPlugin("org.xerial.sbt" % "sbt-sonatype" % "3.8")
 
 addSbtPlugin("io.get-coursier" % "sbt-coursier" % "1.0.3")
 
-addSbtPlugin("com.timushev.sbt" % "sbt-updates" % "0.4.2")
+addSbtPlugin("com.timushev.sbt" % "sbt-updates" % "0.4.3")
 
 addSbtPlugin("net.virtual-void" % "sbt-dependency-graph" % "0.9.2")
