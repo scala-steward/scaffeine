@@ -4,7 +4,7 @@ addSbtPlugin("org.scoverage" % "sbt-coveralls" % "1.2.7")
 
 addSbtPlugin("org.scalariform" % "sbt-scalariform" % "1.8.3")
 
-addSbtPlugin("com.github.gseitz" % "sbt-release" % "1.0.12")
+addSbtPlugin("com.github.gseitz" % "sbt-release" % "1.0.13")
 
 addSbtPlugin("org.xerial.sbt" % "sbt-sonatype" % "3.8.1")
 
