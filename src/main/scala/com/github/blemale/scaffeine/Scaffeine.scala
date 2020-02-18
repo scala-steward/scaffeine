@@ -1,6 +1,6 @@
 package com.github.blemale.scaffeine
 
-import java.util.concurrent.{ CompletableFuture, Executor, TimeUnit }
+import java.util.concurrent.{ CompletableFuture, Executor }
 import java.{ lang, util }
 
 import com.github.benmanes.caffeine
@@ -8,6 +8,7 @@ import com.github.benmanes.caffeine.cache.Scheduler
 import com.github.benmanes.caffeine.cache.stats.StatsCounter
 
 import scala.collection.JavaConverters._
+import scala.compat.java8.DurationConverters._
 import scala.compat.java8.FunctionConverters._
 import scala.compat.java8.FutureConverters._
 import scala.concurrent.Future
@@ -149,8 +150,8 @@ case class Scaffeine[K, V](underlying: caffeine.cache.Caffeine[K, V]) {
    * @throws java.lang.IllegalArgumentException if `duration` is negative
    * @throws java.lang.IllegalStateException    if the time to live or time to idle was already set
    */
-  def expireAfterWrite(duration: Duration): Scaffeine[K, V] =
-    Scaffeine(underlying.expireAfterWrite(duration.toNanos, TimeUnit.NANOSECONDS))
+  def expireAfterWrite(duration: FiniteDuration): Scaffeine[K, V] =
+    Scaffeine(underlying.expireAfterWrite(duration.toJava))
 
   /**
    * Specifies that each entry should be automatically removed from the cache once a fixed duration
@@ -163,8 +164,8 @@ case class Scaffeine[K, V](underlying: caffeine.cache.Caffeine[K, V]) {
    * @throws java.lang.IllegalArgumentException if `duration` is negative
    * @throws java.lang.IllegalStateException if the time to idle or time to live was already set
    */
-  def expireAfterAccess(duration: Duration): Scaffeine[K, V] =
-    Scaffeine(underlying.expireAfterAccess(duration.toNanos, TimeUnit.NANOSECONDS))
+  def expireAfterAccess(duration: FiniteDuration): Scaffeine[K, V] =
+    Scaffeine(underlying.expireAfterAccess(duration.toJava))
 
   /**
    * Specifies that each entry should be automatically removed from the cache once a duration has
@@ -180,9 +181,9 @@ case class Scaffeine[K, V](underlying: caffeine.cache.Caffeine[K, V]) {
    * @throws java.lang.IllegalStateException if expiration was already set or used with expiresAfterAccess or expiresAfterWrite.
    */
   def expireAfter[K1 <: K, V1 <: V](
-    create: (K1, V1) => Duration,
-    update: (K1, V1, Duration) => Duration,
-    read: (K1, V1, Duration) => Duration
+    create: (K1, V1) => FiniteDuration,
+    update: (K1, V1, FiniteDuration) => FiniteDuration,
+    read: (K1, V1, FiniteDuration) => FiniteDuration
   ): Scaffeine[K1, V1] =
     Scaffeine(underlying.expireAfter(new caffeine.cache.Expiry[K1, V1] {
       override def expireAfterCreate(key: K1, value: V1, currentTime: Long): Long =
@@ -205,8 +206,8 @@ case class Scaffeine[K, V](underlying: caffeine.cache.Caffeine[K, V]) {
    * @throws java.lang.IllegalArgumentException if `duration` is negative
    * @throws java.lang.IllegalStateException if the refresh interval was already set
    */
-  def refreshAfterWrite(duration: Duration): Scaffeine[K, V] =
-    Scaffeine(underlying.refreshAfterWrite(duration.toNanos, TimeUnit.NANOSECONDS))
+  def refreshAfterWrite(duration: FiniteDuration): Scaffeine[K, V] =
+    Scaffeine(underlying.refreshAfterWrite(duration.toJava))
 
   /**
    * Specifies a nanosecond-precision time source for use in determining when entries should be
