@@ -15,7 +15,7 @@ scalaVersion := "2.11.12"
 libraryDependencies ++=
   Seq(
       "com.github.ben-manes.caffeine" % "caffeine" % CaffeineVersion.value,
-      "org.scala-lang.modules" %% "scala-java8-compat" % "0.9.0",
+      "org.scala-lang.modules" %% "scala-java8-compat" % "0.9.1",
       "com.google.code.findbugs" % "jsr305" % "3.0.2" % "provided",
       "org.scalactic" %% "scalactic" % "3.2.0-M2" % "test",
       "org.scalatest" %% "scalatest" % "3.2.0-M2" % "test"
