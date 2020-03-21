@@ -1,16 +1,26 @@
-name := "scaffeine"
-
-organization := "com.github.blemale"
-
-licenses += "Apache 2" -> url("http://www.apache.org/licenses/LICENSE-2.0.txt")
-
-description := "Thin Scala wrapper for Caffeine."
-
-startYear := Some(2016)
-
-homepage := Some(url("https://github.com/blemale/scaffeine"))
+inThisBuild(
+  List(
+    name := "scaffeine",
+    description := "Thin Scala wrapper for Caffeine.",
+    organization := "com.github.blemale",
+    homepage := Some(url("https://github.com/blemale/scaffeine")),
+    licenses := List(
+      "Apache 2" -> url("http://www.apache.org/licenses/LICENSE-2.0.txt")
+    ),
+    startYear := Some(2016),
+    developers := List(
+      Developer(
+        "blemale",
+        "Bastien LEMALE",
+        "blemale@protonmail.ch",
+        url("https://github.com/blemale")
+      )
+    )
+  )
+)
 
 scalaVersion := "2.11.12"
+crossScalaVersions := Seq("2.11.12", "2.12.8", "2.13.1")
 
 libraryDependencies ++=
   Seq(
