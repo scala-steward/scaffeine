@@ -21,6 +21,8 @@ libraryDependencies ++=
       "org.scalatest" %% "scalatest" % "3.2.0-M4" % "test"
   )
 
+scalafmtOnCompile := true
+
 scalacOptions ++= Seq("-target:jvm-1.8")
 
 scalacOptions ++=
