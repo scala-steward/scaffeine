@@ -3,12 +3,10 @@ package com.github.blemale.scaffeine.example
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
-class CacheExample
-  extends AnyFlatSpec
-  with Matchers {
+class CacheExample extends AnyFlatSpec with Matchers {
 
   "Cache" should "be created from Scaffeine builder" in {
-    import com.github.blemale.scaffeine.{ Cache, Scaffeine }
+    import com.github.blemale.scaffeine.{Cache, Scaffeine}
 
     import scala.concurrent.duration._
 

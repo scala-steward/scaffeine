@@ -4,10 +4,7 @@ import org.scalatest._
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
-class LoadingCacheSpec
-  extends AnyWordSpec
-  with Matchers
-  with OptionValues {
+class LoadingCacheSpec extends AnyWordSpec with Matchers with OptionValues {
 
   "LoadingCache" should {
     "be a cache" in {
@@ -41,7 +38,8 @@ class LoadingCacheSpec
         Scaffeine()
           .build[String, String](
             loader = (_: String) => "computed",
-            allLoader = Some((keys: Iterable[String]) => keys.map(_ -> "bulked").toMap)
+            allLoader =
+              Some((keys: Iterable[String]) => keys.map(_ -> "bulked").toMap)
           )
       cache.put("foo", "present")
 

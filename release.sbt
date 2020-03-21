@@ -8,7 +8,10 @@ releaseProcess := Seq[ReleaseStep](
   setReleaseVersion,
   commitReleaseVersion,
   tagRelease,
-  ReleaseStep(action = Command.process("publishSigned", _), enableCrossBuild = true),
+  ReleaseStep(
+    action = Command.process("publishSigned", _),
+    enableCrossBuild = true
+  ),
   setNextVersion,
   commitNextVersion,
   ReleaseStep(action = Command.process("sonatypeReleaseAll", _)),
@@ -24,7 +27,7 @@ publishMavenStyle := true
 TravisCredentials.updateCredentials()
 
 pomExtra in Global := {
-    <scm>
+  <scm>
       <connection>scm:git:github.com/blemale/scaffeine.git</connection>
       <developerConnection>scm:git:git@github.com:blemale/scaffeine.git</developerConnection>
       <url>github.com/blemale/scaffeine.git</url>
