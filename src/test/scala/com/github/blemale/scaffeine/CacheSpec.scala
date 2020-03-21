@@ -133,7 +133,7 @@ class CacheSpec extends AnyWordSpec with Matchers with OptionValues {
       cache.getIfPresent("foo")
       cache.getIfPresent("bar")
 
-      val stats = cache.stats
+      val stats = cache.stats()
 
       stats.requestCount should be(2)
       stats.hitRate should be(0.5 +- 0.01)

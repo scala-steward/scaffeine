@@ -113,7 +113,7 @@ case class Scaffeine[K, V](underlying: caffeine.cache.Caffeine[K, V]) {
     * @throws java.lang.IllegalArgumentException if `size` is negative
     * @throws java.lang.IllegalStateException if a maximum size was already set
     */
-  def weigher[K1 <: K, V1 <: V](weigher: (K1, V1) => Int) =
+  def weigher[K1 <: K, V1 <: V](weigher: (K1, V1) => Int): Scaffeine[K1, V1] =
     Scaffeine(underlying.weigher(new caffeine.cache.Weigher[K1, V1] {
       override def weigh(key: K1, value: V1): Int = weigher(key, value)
     }))
@@ -324,7 +324,7 @@ case class Scaffeine[K, V](underlying: caffeine.cache.Caffeine[K, V]) {
     * @param scheduler the scheduler that submits a task to the [[Scaffeine.executor*]] after a given delay
     * @return this builder instance
     */
-  def scheduler(scheduler: Scheduler) =
+  def scheduler(scheduler: Scheduler): Scaffeine[K, V] =
     Scaffeine(underlying.scheduler(scheduler))
 
   /**

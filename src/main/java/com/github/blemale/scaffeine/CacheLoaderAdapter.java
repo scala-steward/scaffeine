@@ -18,7 +18,7 @@ class CacheLoaderAdapter<K, V> implements CacheLoader<K, V>{
   }
 
   @Override
-  public V load(@Nonnull K key) throws Exception {
+  public V load(@Nonnull K key) {
     return loader.apply(key);
   }
 
