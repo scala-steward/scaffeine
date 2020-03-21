@@ -4,10 +4,7 @@ import org.scalatest._
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
-class WeigherSpec
-  extends AnyWordSpec
-  with Matchers
-  with OptionValues {
+class WeigherSpec extends AnyWordSpec with Matchers with OptionValues {
 
   "Cache" should {
     "use weigher for calculate size based eviction" in {

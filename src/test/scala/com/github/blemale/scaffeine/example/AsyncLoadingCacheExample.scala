@@ -7,12 +7,12 @@ import org.scalatest.matchers.should.Matchers
 import scala.concurrent.Future
 
 class AsyncLoadingCacheExample
-  extends AnyFlatSpec
-  with Matchers
-  with ScalaFutures {
+    extends AnyFlatSpec
+    with Matchers
+    with ScalaFutures {
 
   "AsyncLoadingCache" should "be created from Scaffeine builder with synchronous loader" in {
-    import com.github.blemale.scaffeine.{ AsyncLoadingCache, Scaffeine }
+    import com.github.blemale.scaffeine.{AsyncLoadingCache, Scaffeine}
 
     import scala.concurrent.duration._
 
@@ -23,13 +23,11 @@ class AsyncLoadingCacheExample
         .maximumSize(500)
         .buildAsync((i: Int) => s"foo$i")
 
-    whenReady(cache.get(1)) { value =>
-      value should be("foo1")
-    }
+    whenReady(cache.get(1))(value => value should be("foo1"))
   }
 
   "AsyncLoadingCache" should "be created from Scaffeine builder with asynchronous loader" in {
-    import com.github.blemale.scaffeine.{ AsyncLoadingCache, Scaffeine }
+    import com.github.blemale.scaffeine.{AsyncLoadingCache, Scaffeine}
 
     import scala.concurrent.duration._
 
@@ -40,8 +38,6 @@ class AsyncLoadingCacheExample
         .maximumSize(500)
         .buildAsyncFuture((i: Int) => Future.successful(s"foo$i"))
 
-    whenReady(cache.get(1)) { value =>
-      value should be("foo1")
-    }
+    whenReady(cache.get(1))(value => value should be("foo1"))
   }
 }

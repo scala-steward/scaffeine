@@ -8,10 +8,10 @@ import org.scalatest.wordspec.AnyWordSpec
 import scala.concurrent.Future
 
 class AsyncCacheSpec
-  extends AnyWordSpec
-  with Matchers
-  with ScalaFutures
-  with OptionValues {
+    extends AnyWordSpec
+    with Matchers
+    with ScalaFutures
+    with OptionValues {
 
   "AsyncCache" should {
     "get value if present" in {
@@ -51,7 +51,8 @@ class AsyncCacheSpec
       val cache = Scaffeine().buildAsync[String, String]()
 
       cache.put("foo", Future.successful("present"))
-      val values = cache.getAll(List("foo", "bar"), _.map(key => (key, "computed")).toMap)
+      val values =
+        cache.getAll(List("foo", "bar"), _.map(key => (key, "computed")).toMap)
 
       values.futureValue should contain only ("foo" -> "present", "bar" -> "computed")
     }
@@ -60,7 +61,10 @@ class AsyncCacheSpec
       val cache = Scaffeine().buildAsync[String, String]()
 
       cache.put("foo", Future.successful("present"))
-      val values = cache.getAllFuture(List("foo", "bar"), keys => Future.successful(keys.map(key => (key, "computed")).toMap))
+      val values = cache.getAllFuture(
+        List("foo", "bar"),
+        keys => Future.successful(keys.map(key => (key, "computed")).toMap)
+      )
 
       values.futureValue should contain only ("foo" -> "present", "bar" -> "computed")
     }

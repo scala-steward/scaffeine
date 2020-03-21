@@ -8,16 +8,17 @@ import org.scalatest.wordspec.AnyWordSpec
 import scala.concurrent.Future
 
 class AsyncLoadingCacheSpec
-  extends AnyWordSpec
-  with Matchers
-  with ScalaFutures
-  with OptionValues {
+    extends AnyWordSpec
+    with Matchers
+    with ScalaFutures
+    with OptionValues {
 
   "AsyncLoadingCache" when {
     "created with synchronous loader" should {
 
       "get or load value" in {
-        val cache = Scaffeine().buildAsync[String, String]((_: String) => "loaded")
+        val cache =
+          Scaffeine().buildAsync[String, String]((_: String) => "loaded")
 
         cache.put("foo", Future.successful("present"))
         val fooValue = cache.get("foo")
@@ -28,7 +29,8 @@ class AsyncLoadingCacheSpec
       }
 
       "get or load all given values" in {
-        val cache = Scaffeine().buildAsync[String, String]((_: String) => "loaded")
+        val cache =
+          Scaffeine().buildAsync[String, String]((_: String) => "loaded")
 
         cache.put("foo", Future.successful("present"))
         val values = cache.getAll(List("foo", "bar"))
@@ -39,7 +41,8 @@ class AsyncLoadingCacheSpec
       "get or bulk load all given values" in {
         val cache = Scaffeine().buildAsync[String, String](
           (_: String) => "loaded",
-          allLoader = Some((keys: Iterable[String]) => keys.map(_ -> "bulked").toMap)
+          allLoader =
+            Some((keys: Iterable[String]) => keys.map(_ -> "bulked").toMap)
         )
 
         cache.put("foo", Future.successful("present"))
@@ -49,7 +52,8 @@ class AsyncLoadingCacheSpec
       }
 
       "expose a synchronous view of itself" in {
-        val cache = Scaffeine().buildAsync[String, String]((_: String) => "loaded")
+        val cache =
+          Scaffeine().buildAsync[String, String]((_: String) => "loaded")
 
         val synchronousCache = cache.synchronous()
 
@@ -59,7 +63,9 @@ class AsyncLoadingCacheSpec
 
     "created with asynchronous loader" should {
       "get or load value" in {
-        val cache = Scaffeine().buildAsyncFuture[String, String]((_: String) => Future.successful("loaded"))
+        val cache = Scaffeine().buildAsyncFuture[String, String]((_: String) =>
+          Future.successful("loaded")
+        )
 
         cache.put("foo", Future.successful("present"))
         val fooValue = cache.get("foo")
@@ -70,7 +76,9 @@ class AsyncLoadingCacheSpec
       }
 
       "get or load all given values" in {
-        val cache = Scaffeine().buildAsyncFuture[String, String]((_: String) => Future.successful("loaded"))
+        val cache = Scaffeine().buildAsyncFuture[String, String]((_: String) =>
+          Future.successful("loaded")
+        )
 
         cache.put("foo", Future.successful("present"))
         val values = cache.getAll(List("foo", "bar"))
@@ -81,7 +89,9 @@ class AsyncLoadingCacheSpec
       "get or bulk load all given values" in {
         val cache = Scaffeine().buildAsyncFuture[String, String](
           (_: String) => Future.successful("loaded"),
-          allLoader = Some((keys: Iterable[String]) => Future.successful(keys.map(_ -> "bulked").toMap))
+          allLoader = Some((keys: Iterable[String]) =>
+            Future.successful(keys.map(_ -> "bulked").toMap)
+          )
         )
 
         cache.put("foo", Future.successful("present"))

@@ -10,12 +10,9 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
 import scala.concurrent.duration._
-import scala.concurrent.{ ExecutionContext, Future }
+import scala.concurrent.{ExecutionContext, Future}
 
-class ScaffeineSpec
-  extends AnyWordSpec
-  with Matchers
-  with PrivateMethodTester {
+class ScaffeineSpec extends AnyWordSpec with Matchers with PrivateMethodTester {
 
   "Scaffeine" should {
     "create builder" in {
@@ -25,7 +22,8 @@ class ScaffeineSpec
     }
 
     "create builder from spec" in {
-      val scaffeine: Scaffeine[Any, Any] = Scaffeine(caffeine.cache.CaffeineSpec.parse("initialCapacity=10"))
+      val scaffeine: Scaffeine[Any, Any] =
+        Scaffeine(caffeine.cache.CaffeineSpec.parse("initialCapacity=10"))
 
       scaffeine shouldBe a[Scaffeine[_, _]]
     }
@@ -40,7 +38,8 @@ class ScaffeineSpec
       val scaffeine = Scaffeine().initialCapacity(99)
 
       val getInitialCapacity = PrivateMethod[Int]('getInitialCapacity)
-      val initialCapacity = scaffeine.underlying invokePrivate getInitialCapacity()
+      val initialCapacity =
+        scaffeine.underlying invokePrivate getInitialCapacity()
 
       initialCapacity should be(99)
     }
@@ -49,7 +48,7 @@ class ScaffeineSpec
       val scaffeine = Scaffeine().executor(ExecutionContext.global)
 
       val getExecutor = PrivateMethod[Executor]('getExecutor)
-      val executor = scaffeine.underlying invokePrivate getExecutor()
+      val executor    = scaffeine.underlying invokePrivate getExecutor()
 
       executor should be(ExecutionContext.global)
     }
@@ -58,16 +57,17 @@ class ScaffeineSpec
       val scaffeine = Scaffeine().maximumSize(99)
 
       val getMaximumWeight = PrivateMethod[Long]('getMaximum)
-      val maximumSize = scaffeine.underlying invokePrivate getMaximumWeight()
+      val maximumSize      = scaffeine.underlying invokePrivate getMaximumWeight()
 
       maximumSize should be(99L)
     }
 
     "set maximum weight" in {
-      val scaffeine = Scaffeine().maximumWeight(99).weigher((_: Any, _: Any) => 1)
+      val scaffeine =
+        Scaffeine().maximumWeight(99).weigher((_: Any, _: Any) => 1)
 
       val getMaximumWeight = PrivateMethod[Long]('getMaximum)
-      val maximumWeight = scaffeine.underlying invokePrivate getMaximumWeight()
+      val maximumWeight    = scaffeine.underlying invokePrivate getMaximumWeight()
 
       maximumWeight should be(99L)
     }
@@ -76,7 +76,7 @@ class ScaffeineSpec
       val scaffeine = Scaffeine().weigher((_: Any, _: Any) => 1)
 
       val isWeighted = PrivateMethod[Boolean]('isWeighted)
-      val weighted = scaffeine.underlying invokePrivate isWeighted()
+      val weighted   = scaffeine.underlying invokePrivate isWeighted()
 
       weighted should be(true)
     }
@@ -85,7 +85,7 @@ class ScaffeineSpec
       val scaffeine = Scaffeine().weakKeys()
 
       val isStrongKeys = PrivateMethod[Boolean]('isStrongKeys)
-      val strongKeys = scaffeine.underlying invokePrivate isStrongKeys()
+      val strongKeys   = scaffeine.underlying invokePrivate isStrongKeys()
 
       strongKeys should be(false)
     }
@@ -94,7 +94,7 @@ class ScaffeineSpec
       val scaffeine = Scaffeine().weakValues()
 
       val isWeakValues = PrivateMethod[Boolean]('isWeakValues)
-      val weakValues = scaffeine.underlying invokePrivate isWeakValues()
+      val weakValues   = scaffeine.underlying invokePrivate isWeakValues()
 
       weakValues should be(true)
     }
@@ -103,10 +103,10 @@ class ScaffeineSpec
       val scaffeine = Scaffeine().softValues()
 
       val isStrongValues = PrivateMethod[Boolean]('isStrongValues)
-      val isWeakValues = PrivateMethod[Boolean]('isWeakValues)
+      val isWeakValues   = PrivateMethod[Boolean]('isWeakValues)
 
       val strongValues = scaffeine.underlying invokePrivate isStrongValues()
-      val weakValues = scaffeine.underlying invokePrivate isWeakValues()
+      val weakValues   = scaffeine.underlying invokePrivate isWeakValues()
 
       strongValues should be(false)
       weakValues should be(false)
@@ -115,8 +115,10 @@ class ScaffeineSpec
     "set expire after write" in {
       val scaffeine = Scaffeine().expireAfterWrite(10.minutes)
 
-      val getExpiresAfterWriteNanos = PrivateMethod[Long]('getExpiresAfterWriteNanos)
-      val expiresAfterWriteNanos = scaffeine.underlying invokePrivate getExpiresAfterWriteNanos()
+      val getExpiresAfterWriteNanos =
+        PrivateMethod[Long]('getExpiresAfterWriteNanos)
+      val expiresAfterWriteNanos =
+        scaffeine.underlying invokePrivate getExpiresAfterWriteNanos()
 
       expiresAfterWriteNanos should be(10.minutes.toNanos)
     }
@@ -124,8 +126,10 @@ class ScaffeineSpec
     "set expire after access" in {
       val scaffeine = Scaffeine().expireAfterAccess(10.minutes)
 
-      val getExpiresAfterAccessNanos = PrivateMethod[Long]('getExpiresAfterAccessNanos)
-      val expiresAfterAccessNanos = scaffeine.underlying invokePrivate getExpiresAfterAccessNanos()
+      val getExpiresAfterAccessNanos =
+        PrivateMethod[Long]('getExpiresAfterAccessNanos)
+      val expiresAfterAccessNanos =
+        scaffeine.underlying invokePrivate getExpiresAfterAccessNanos()
 
       expiresAfterAccessNanos should be(10.minutes.toNanos)
     }
@@ -138,7 +142,7 @@ class ScaffeineSpec
       )
 
       val getExpiry = PrivateMethod[caffeine.cache.Expiry[Any, Any]]('getExpiry)
-      val expiry = scaffeine.underlying invokePrivate getExpiry(false)
+      val expiry    = scaffeine.underlying invokePrivate getExpiry(false)
 
       expiry.expireAfterCreate(null, null, 0) should be(10.minutes.toNanos)
       expiry.expireAfterUpdate(null, null, 0, 0) should be(20.minutes.toNanos)
@@ -148,8 +152,10 @@ class ScaffeineSpec
     "set refresh after write" in {
       val scaffeine = Scaffeine().refreshAfterWrite(10.minutes)
 
-      val getRefreshAfterWriteNanos = PrivateMethod[Long]('getRefreshAfterWriteNanos)
-      val refreshAfterWriteNanos = scaffeine.underlying invokePrivate getRefreshAfterWriteNanos()
+      val getRefreshAfterWriteNanos =
+        PrivateMethod[Long]('getRefreshAfterWriteNanos)
+      val refreshAfterWriteNanos =
+        scaffeine.underlying invokePrivate getRefreshAfterWriteNanos()
 
       refreshAfterWriteNanos should be(10.minutes.toNanos)
     }
@@ -158,16 +164,21 @@ class ScaffeineSpec
       val scaffeine = Scaffeine().ticker(caffeine.cache.Ticker.disabledTicker())
 
       val getTicker = PrivateMethod[caffeine.cache.Ticker]('getTicker)
-      val ticker = scaffeine.underlying invokePrivate getTicker()
+      val ticker    = scaffeine.underlying invokePrivate getTicker()
 
       ticker should be(caffeine.cache.Ticker.disabledTicker())
     }
 
     "set removal listener" in {
-      val scaffeine = Scaffeine().removalListener((_: Any, _: Any, _) => println("removed"))
+      val scaffeine =
+        Scaffeine().removalListener((_: Any, _: Any, _) => println("removed"))
 
-      val getRemovalListener = PrivateMethod[caffeine.cache.RemovalListener[Any, Any]]('getRemovalListener)
-      val removalListener = scaffeine.underlying invokePrivate getRemovalListener(false)
+      val getRemovalListener =
+        PrivateMethod[caffeine.cache.RemovalListener[Any, Any]](
+          'getRemovalListener
+        )
+      val removalListener =
+        scaffeine.underlying invokePrivate getRemovalListener(false)
 
       removalListener shouldNot be(null)
     }
@@ -175,12 +186,17 @@ class ScaffeineSpec
     "set cache writer" in {
       val writer = new caffeine.cache.CacheWriter[Any, Any] {
         override def write(key: Any, value: Any): Unit = println("write")
-        override def delete(key: Any, value: Any, cause: caffeine.cache.RemovalCause): Unit = println("delete")
+        override def delete(
+            key: Any,
+            value: Any,
+            cause: caffeine.cache.RemovalCause
+        ): Unit = println("delete")
       }
 
       val scaffeine = Scaffeine().writer(writer)
 
-      val getCacheWriter = PrivateMethod[caffeine.cache.CacheWriter[Any, Any]]('getCacheWriter)
+      val getCacheWriter =
+        PrivateMethod[caffeine.cache.CacheWriter[Any, Any]]('getCacheWriter)
       val cacheWriter = scaffeine.underlying invokePrivate getCacheWriter()
 
       cacheWriter should be(writer)
@@ -190,16 +206,17 @@ class ScaffeineSpec
       val scaffeine = Scaffeine().recordStats()
 
       val isRecordingStats = PrivateMethod[Boolean]('isRecordingStats)
-      val recordingStats = scaffeine.underlying invokePrivate isRecordingStats()
+      val recordingStats   = scaffeine.underlying invokePrivate isRecordingStats()
 
       recordingStats should be(true)
     }
 
     "set record stats supplier" in {
-      val scaffeine = Scaffeine().recordStats(() => StatsCounter.disabledStatsCounter())
+      val scaffeine =
+        Scaffeine().recordStats(() => StatsCounter.disabledStatsCounter())
 
       val isRecordingStats = PrivateMethod[Boolean]('isRecordingStats)
-      val recordingStats = scaffeine.underlying invokePrivate isRecordingStats()
+      val recordingStats   = scaffeine.underlying invokePrivate isRecordingStats()
 
       recordingStats should be(true)
     }
@@ -208,7 +225,7 @@ class ScaffeineSpec
       val scaffeine = Scaffeine().scheduler(Scheduler.systemScheduler())
 
       val getScheduler = PrivateMethod[Scheduler]('getScheduler)
-      val scheduler = scaffeine.underlying invokePrivate getScheduler()
+      val scheduler    = scaffeine.underlying invokePrivate getScheduler()
 
       scheduler should be(Scheduler.systemScheduler())
     }
@@ -230,7 +247,8 @@ class ScaffeineSpec
         Scaffeine()
           .build[Int, Int](
             loader = (key: Int) => key + 1,
-            allLoader = Some((keys: Iterable[Int]) => keys.map(i => i -> (i + 1)).toMap),
+            allLoader =
+              Some((keys: Iterable[Int]) => keys.map(i => i -> (i + 1)).toMap),
             reloadLoader = Some((key: Int, _: Int) => key + 1)
           )
 
@@ -248,7 +266,8 @@ class ScaffeineSpec
         Scaffeine()
           .buildAsync[Int, Int](
             loader = (key: Int) => key + 1,
-            allLoader = Some((keys: Iterable[Int]) => keys.map(i => i -> (i + 1)).toMap),
+            allLoader =
+              Some((keys: Iterable[Int]) => keys.map(i => i -> (i + 1)).toMap),
             reloadLoader = Some((key: Int, _: Int) => key + 1)
           )
 
@@ -256,7 +275,9 @@ class ScaffeineSpec
     }
 
     "build async loading cache from async loading function" in {
-      val cache = Scaffeine().buildAsyncFuture[Int, Int]((i: Int) => Future.successful(i + 1))
+      val cache = Scaffeine().buildAsyncFuture[Int, Int]((i: Int) =>
+        Future.successful(i + 1)
+      )
 
       cache shouldBe a[AsyncLoadingCache[_, _]]
     }
@@ -266,8 +287,11 @@ class ScaffeineSpec
         Scaffeine()
           .buildAsyncFuture[Int, Int](
             loader = (key: Int) => Future.successful(key + 1),
-            allLoader = Some((keys: Iterable[Int]) => Future.successful(keys.map(i => i -> (i + 1)).toMap)),
-            reloadLoader = Some((key: Int, _: Int) => Future.successful(key + 1))
+            allLoader = Some((keys: Iterable[Int]) =>
+              Future.successful(keys.map(i => i -> (i + 1)).toMap)
+            ),
+            reloadLoader =
+              Some((key: Int, _: Int) => Future.successful(key + 1))
           )
 
       cache shouldBe a[AsyncLoadingCache[_, _]]

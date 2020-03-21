@@ -4,10 +4,7 @@ import org.scalatest._
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
-class CacheSpec
-  extends AnyWordSpec
-  with Matchers
-  with OptionValues {
+class CacheSpec extends AnyWordSpec with Matchers with OptionValues {
 
   "Cache" should {
     "get value if present" in {
@@ -15,7 +12,7 @@ class CacheSpec
       cache.put("foo", "present")
 
       val valuePresent = cache.getIfPresent("foo")
-      val valueAbsent = cache.getIfPresent("bar")
+      val valueAbsent  = cache.getIfPresent("bar")
 
       valuePresent.value should be("present")
       valueAbsent should be(None)
@@ -25,7 +22,7 @@ class CacheSpec
       val cache = Scaffeine().build[String, String]()
       cache.put("foo", "present")
 
-      val present = cache.get("foo", _ => "computed")
+      val present  = cache.get("foo", _ => "computed")
       val computed = cache.get("bar", _ => "computed")
 
       present should be("present")
@@ -46,7 +43,8 @@ class CacheSpec
       val cache = Scaffeine().build[String, String]()
       cache.put("foo", "present")
 
-      val keyValues = cache.getAll(List("foo", "bar"), _.map(key => (key, "computed")).toMap)
+      val keyValues =
+        cache.getAll(List("foo", "bar"), _.map(key => (key, "computed")).toMap)
 
       keyValues should contain only ("foo" -> "present", "bar" -> "computed")
     }
