@@ -442,35 +442,37 @@ case class Scaffeine[K, V](underlying: caffeine.cache.Caffeine[K, V]) {
       loader: K1 => V1,
       allLoader: Option[Iterable[K1] => Map[K1, V1]],
       reloadLoader: Option[(K1, V1) => V1]
-  ): caffeine.cache.CacheLoader[K1, V1] = allLoader match {
-    case Some(l) =>
-      new CacheLoaderAdapter[K1, V1](loader, reloadLoader) {
+  ): caffeine.cache.CacheLoader[K1, V1] =
+    allLoader match {
+      case Some(l) =>
+        new CacheLoaderAdapter[K1, V1](loader, reloadLoader) {
 
-        override def loadAll(keys: lang.Iterable[_ <: K1]): util.Map[K1, V1] =
-          l(keys.asScala).asJava
-      }
-    case None =>
-      new CacheLoaderAdapter[K1, V1](loader, reloadLoader)
-  }
+          override def loadAll(keys: lang.Iterable[_ <: K1]): util.Map[K1, V1] =
+            l(keys.asScala).asJava
+        }
+      case None =>
+        new CacheLoaderAdapter[K1, V1](loader, reloadLoader)
+    }
 
   private[this] def toAsyncCacheLoader[K1 <: K, V1 <: V](
       loader: K1 => Future[V1],
       allLoader: Option[Iterable[K1] => Future[Map[K1, V1]]],
       reloadLoader: Option[(K1, V1) => Future[V1]]
-  ): caffeine.cache.AsyncCacheLoader[K1, V1] = allLoader match {
-    case Some(l) =>
-      new AsyncCacheLoaderAdapter[K1, V1](loader, reloadLoader) {
+  ): caffeine.cache.AsyncCacheLoader[K1, V1] =
+    allLoader match {
+      case Some(l) =>
+        new AsyncCacheLoaderAdapter[K1, V1](loader, reloadLoader) {
 
-        override def asyncLoadAll(
-            keys: lang.Iterable[_ <: K1],
-            executor: Executor
-        ): CompletableFuture[util.Map[K1, V1]] =
-          l(keys.asScala)
-            .map(_.asJava)(DirectExecutionContext)
-            .toJava
-            .toCompletableFuture
-      }
-    case None =>
-      new AsyncCacheLoaderAdapter[K1, V1](loader, reloadLoader)
-  }
+          override def asyncLoadAll(
+              keys: lang.Iterable[_ <: K1],
+              executor: Executor
+          ): CompletableFuture[util.Map[K1, V1]] =
+            l(keys.asScala)
+              .map(_.asJava)(DirectExecutionContext)
+              .toJava
+              .toCompletableFuture
+        }
+      case None =>
+        new AsyncCacheLoaderAdapter[K1, V1](loader, reloadLoader)
+    }
 }
