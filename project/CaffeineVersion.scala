@@ -1,5 +1,5 @@
 object CaffeineVersion {
 
-  val value: String = "2.8.1"
+  val value: String = "2.8.4"
 
 }
