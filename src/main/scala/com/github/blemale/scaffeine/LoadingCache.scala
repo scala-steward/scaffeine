@@ -15,8 +15,7 @@ object LoadingCache {
 class LoadingCache[K, V](override val underlying: CaffeineLoadingCache[K, V])
     extends Cache(underlying) {
 
-  /**
-    * Returns the value associated with `key` in this cache, obtaining that value from
+  /** Returns the value associated with `key` in this cache, obtaining that value from
     * `loader` if necessary.
     * <p>
     * If another call to this method is currently loading the value for `key`, this thread
@@ -34,8 +33,7 @@ class LoadingCache[K, V](override val underlying: CaffeineLoadingCache[K, V])
   def get(key: K): V =
     underlying.get(key)
 
-  /**
-    * Returns a map of the values associated with `keys`, creating or retrieving those values
+  /** Returns a map of the values associated with `keys`, creating or retrieving those values
     * if necessary. The returned map contains entries that were already cached, combined with newly
     * loaded entries.
     *
@@ -47,8 +45,7 @@ class LoadingCache[K, V](override val underlying: CaffeineLoadingCache[K, V])
   def getAll(keys: Iterable[K]): Map[K, V] =
     underlying.getAll(keys.asJava).asScala.toMap
 
-  /**
-    * Loads a new value for the `key`, asynchronously. While the new value is loading the
+  /** Loads a new value for the `key`, asynchronously. While the new value is loading the
     * previous value (if any) will continue to be returned by `get(key)` unless it is evicted.
     *
     * @param key key with which a value may be associated

@@ -19,8 +19,7 @@ class AsyncLoadingCache[K, V](
 ) extends AsyncCache[K, V](underlying) {
   implicit private[this] val ec: ExecutionContext = DirectExecutionContext
 
-  /**
-    * Returns the future associated with `key` in this cache, obtaining that value from
+  /** Returns the future associated with `key` in this cache, obtaining that value from
     * `loader` if necessary. If the asynchronous computation fails, the entry
     * will be automatically removed.
     *
@@ -32,8 +31,7 @@ class AsyncLoadingCache[K, V](
   def get(key: K): Future[V] =
     underlying.get(key).toScala
 
-  /**
-    * Returns the future of a map of the values associated with `keys`, creating or retrieving
+  /** Returns the future of a map of the values associated with `keys`, creating or retrieving
     * those values if necessary. The returned map contains entries that were already cached, combined
     * with newly loaded entries. If the any of the asynchronous computations fail, those entries will
     * be automatically removed.
@@ -45,8 +43,7 @@ class AsyncLoadingCache[K, V](
   def getAll(keys: Iterable[K]): Future[Map[K, V]] =
     underlying.getAll(keys.asJava).toScala.map(_.asScala.toMap)
 
-  /**
-    * Returns a view of the entries stored in this cache as a synchronous [[LoadingCache]]. A
+  /** Returns a view of the entries stored in this cache as a synchronous [[LoadingCache]]. A
     * mapping is not present if the value is currently being loaded. Modifications made to the
     * synchronous cache directly affect the asynchronous cache. If a modification is made to a
     * mapping that is currently loading, the operation blocks until the computation completes.

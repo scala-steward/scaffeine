@@ -18,8 +18,7 @@ object AsyncCache {
 class AsyncCache[K, V](val underlying: CaffeineAsyncCache[K, V]) {
   implicit private[this] val ec: ExecutionContext = DirectExecutionContext
 
-  /**
-    * Returns the future associated with `key` in this cache, or `None` if there is no
+  /** Returns the future associated with `key` in this cache, or `None` if there is no
     * cached future for `key`.
     *
     * @param key key whose associated value is to be returned
@@ -29,8 +28,7 @@ class AsyncCache[K, V](val underlying: CaffeineAsyncCache[K, V]) {
   def getIfPresent(key: K): Option[Future[V]] =
     Option(underlying.getIfPresent(key)).map(_.toScala)
 
-  /**
-    * Returns the future associated with `key` in this cache, obtaining that value from
+  /** Returns the future associated with `key` in this cache, obtaining that value from
     * `mappingFunction` if necessary. This method provides a simple substitute for the
     * conventional "if cached, return; otherwise create, cache and return" pattern.
     *
@@ -41,8 +39,7 @@ class AsyncCache[K, V](val underlying: CaffeineAsyncCache[K, V]) {
   def get(key: K, mappingFunction: K => V): Future[V] =
     underlying.get(key, asJavaFunction(mappingFunction)).toScala
 
-  /**
-    * Returns the future associated with `key` in this cache, obtaining that value from
+  /** Returns the future associated with `key` in this cache, obtaining that value from
     * `mappingFunction` if necessary. This method provides a simple substitute for the
     * conventional "if cached, return; otherwise create, cache and return" pattern.
     *
@@ -62,8 +59,7 @@ class AsyncCache[K, V](val underlying: CaffeineAsyncCache[K, V]) {
       )
       .toScala
 
-  /**
-    * Returns the future of a map of the values associated with `keys`, creating or retrieving
+  /** Returns the future of a map of the values associated with `keys`, creating or retrieving
     * those values if necessary. The returned map contains entries that were already cached, combined
     * with newly loaded entries. If the any of the asynchronous computations fail, those entries will
     * be automatically removed from this cache.
@@ -92,8 +88,7 @@ class AsyncCache[K, V](val underlying: CaffeineAsyncCache[K, V]) {
       .toScala
       .map(_.asScala.toMap)
 
-  /**
-    * Returns the future of a map of the values associated with `keys`, creating or retrieving
+  /** Returns the future of a map of the values associated with `keys`, creating or retrieving
     * those values if necessary. The returned map contains entries that were already cached, combined
     * with newly loaded entries. If the any of the asynchronous computations fail, those entries will
     * be automatically removed from this cache.
@@ -122,8 +117,7 @@ class AsyncCache[K, V](val underlying: CaffeineAsyncCache[K, V]) {
       .toScala
       .map(_.asScala.toMap)
 
-  /**
-    * Associates `value` with `key` in this cache. If the cache previously contained a
+  /** Associates `value` with `key` in this cache. If the cache previously contained a
     * value associated with `key`, the old value is replaced by `value`. If the
     * asynchronous computation fails, the entry will be automatically removed.
     *
@@ -133,8 +127,7 @@ class AsyncCache[K, V](val underlying: CaffeineAsyncCache[K, V]) {
   def put(key: K, valueFuture: Future[V]): Unit =
     underlying.put(key, valueFuture.toJava.toCompletableFuture)
 
-  /**
-    * Returns a view of the entries stored in this cache as a synchronous [[Cache]]. A
+  /** Returns a view of the entries stored in this cache as a synchronous [[Cache]]. A
     * mapping is not present if the value is currently being loaded. Modifications made to the
     * synchronous cache directly affect the asynchronous cache. If a modification is made to a
     * mapping that is currently loading, the operation blocks until the computation completes.
