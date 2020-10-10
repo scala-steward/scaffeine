@@ -16,8 +16,7 @@ import scala.concurrent.duration._
 
 object Scaffeine {
 
-  /**
-    * Constructs a new `Scaffeine` instance with default settings, including strong keys, strong
+  /** Constructs a new `Scaffeine` instance with default settings, including strong keys, strong
     * values, and no automatic eviction of any kind.
     *
     * @return a new instance with default settings
@@ -29,8 +28,7 @@ object Scaffeine {
         .asInstanceOf[caffeine.cache.Caffeine[Any, Any]]
     )
 
-  /**
-    * Constructs a new `Scaffeine` instance with the settings specified in `spec`.
+  /** Constructs a new `Scaffeine` instance with the settings specified in `spec`.
     *
     * @param spec an instance of [[com.github.benmanes.caffeine.cache.CaffeineSpec]]
     * @return a new instance with the specification's settings
@@ -42,8 +40,7 @@ object Scaffeine {
         .asInstanceOf[caffeine.cache.Caffeine[Any, Any]]
     )
 
-  /**
-    * Constructs a new `Scaffeine` instance with the settings specified in `spec`.
+  /** Constructs a new `Scaffeine` instance with the settings specified in `spec`.
     *
     * @param spec a [[java.lang.String]] in the format specified by
     *             [[com.github.benmanes.caffeine.cache.CaffeineSpec]]
@@ -59,8 +56,7 @@ object Scaffeine {
 
 case class Scaffeine[K, V](underlying: caffeine.cache.Caffeine[K, V]) {
 
-  /**
-    * Sets the minimum total size for the internal hash tables.
+  /** Sets the minimum total size for the internal hash tables.
     *
     * @param initialCapacity minimum total size for the internal hash tables
     * @return this builder instance
@@ -70,8 +66,7 @@ case class Scaffeine[K, V](underlying: caffeine.cache.Caffeine[K, V]) {
   def initialCapacity(initialCapacity: Int): Scaffeine[K, V] =
     Scaffeine(underlying.initialCapacity(initialCapacity))
 
-  /**
-    * Specifies the executor to use when running asynchronous tasks.
+  /** Specifies the executor to use when running asynchronous tasks.
     *
     * @param executor the executor to use for asynchronous execution
     * @return this builder instance
@@ -79,8 +74,7 @@ case class Scaffeine[K, V](underlying: caffeine.cache.Caffeine[K, V]) {
   def executor(executor: Executor): Scaffeine[K, V] =
     Scaffeine(underlying.executor(executor))
 
-  /**
-    * Specifies the maximum number of entries the cache may contain.
+  /** Specifies the maximum number of entries the cache may contain.
     *
     * @param maximumSize the maximum size of the cache
     * @return this builder instance
@@ -90,8 +84,7 @@ case class Scaffeine[K, V](underlying: caffeine.cache.Caffeine[K, V]) {
   def maximumSize(maximumSize: Long): Scaffeine[K, V] =
     Scaffeine(underlying.maximumSize(maximumSize))
 
-  /**
-    * Specifies the maximum weight of entries the cache may contain.
+  /** Specifies the maximum weight of entries the cache may contain.
     * <p>
     * This feature cannot be used in conjunction with [[Scaffeine.maximumSize]].
     *
@@ -103,8 +96,7 @@ case class Scaffeine[K, V](underlying: caffeine.cache.Caffeine[K, V]) {
   def maximumWeight(maximumWeight: Long): Scaffeine[K, V] =
     Scaffeine(underlying.maximumWeight(maximumWeight))
 
-  /**
-    * Specifies the weigher to use in determining the weight of entries.
+  /** Specifies the weigher to use in determining the weight of entries.
     *
     * @param weigher the weigher to use in calculating the weight of cache entries
     * @tparam K1 key type of the weigher
@@ -118,8 +110,7 @@ case class Scaffeine[K, V](underlying: caffeine.cache.Caffeine[K, V]) {
       override def weigh(key: K1, value: V1): Int = weigher(key, value)
     }))
 
-  /**
-    * Specifies that each key (not value) stored in the cache should be wrapped in a
+  /** Specifies that each key (not value) stored in the cache should be wrapped in a
     * [[java.lang.ref.WeakReference]] (by default, strong references are used).
     * <p>
     * This feature cannot be used in conjunction with [[Scaffeine.writer]].
@@ -130,8 +121,7 @@ case class Scaffeine[K, V](underlying: caffeine.cache.Caffeine[K, V]) {
   def weakKeys(): Scaffeine[K, V] =
     Scaffeine(underlying.weakKeys())
 
-  /**
-    * Specifies that each value (not key) stored in the cache should be wrapped in a
+  /** Specifies that each value (not key) stored in the cache should be wrapped in a
     * [[java.lang.ref.WeakReference]] (by default, strong references are used).
     * <p>
     * This feature cannot be used in conjunction with [[Scaffeine.buildAsync[K1<:K,V1<:V]()*]].
@@ -142,8 +132,7 @@ case class Scaffeine[K, V](underlying: caffeine.cache.Caffeine[K, V]) {
   def weakValues(): Scaffeine[K, V] =
     Scaffeine(underlying.weakValues())
 
-  /**
-    * Specifies that each value (not key) stored in the cache should be wrapped in a
+  /** Specifies that each value (not key) stored in the cache should be wrapped in a
     * [[java.lang.ref.SoftReference]] (by default, strong references are used).
     * <p>
     * This feature cannot be used in conjunction with [[Scaffeine.buildAsync[K1<:K,V1<:V]()*]].
@@ -154,8 +143,7 @@ case class Scaffeine[K, V](underlying: caffeine.cache.Caffeine[K, V]) {
   def softValues(): Scaffeine[K, V] =
     Scaffeine(underlying.softValues())
 
-  /**
-    * Specifies that each entry should be automatically removed from the cache once a fixed duration
+  /** Specifies that each entry should be automatically removed from the cache once a fixed duration
     * has elapsed after the entry's creation, or the most recent replacement of its value.
     *
     * @param duration the length of time after an entry is created that it should be automatically
@@ -167,8 +155,7 @@ case class Scaffeine[K, V](underlying: caffeine.cache.Caffeine[K, V]) {
   def expireAfterWrite(duration: FiniteDuration): Scaffeine[K, V] =
     Scaffeine(underlying.expireAfterWrite(duration.toJava))
 
-  /**
-    * Specifies that each entry should be automatically removed from the cache once a fixed duration
+  /** Specifies that each entry should be automatically removed from the cache once a fixed duration
     * has elapsed after the entry's creation, the most recent replacement of its value, or its last
     * read.
     *
@@ -181,8 +168,7 @@ case class Scaffeine[K, V](underlying: caffeine.cache.Caffeine[K, V]) {
   def expireAfterAccess(duration: FiniteDuration): Scaffeine[K, V] =
     Scaffeine(underlying.expireAfterAccess(duration.toJava))
 
-  /**
-    * Specifies that each entry should be automatically removed from the cache once a duration has
+  /** Specifies that each entry should be automatically removed from the cache once a duration has
     * elapsed after the entry's creation, the most recent replacement of its value, or its last
     * read.
     *
@@ -226,8 +212,7 @@ case class Scaffeine[K, V](underlying: caffeine.cache.Caffeine[K, V]) {
         .asInstanceOf[caffeine.cache.Caffeine[K1, V1]]
     )
 
-  /**
-    * Specifies that active entries are eligible for automatic refresh once a fixed duration has
+  /** Specifies that active entries are eligible for automatic refresh once a fixed duration has
     * elapsed after the entry's creation, or the most recent replacement of its value.
     *
     * @param duration the length of time after an entry is created that it should be considered
@@ -239,8 +224,7 @@ case class Scaffeine[K, V](underlying: caffeine.cache.Caffeine[K, V]) {
   def refreshAfterWrite(duration: FiniteDuration): Scaffeine[K, V] =
     Scaffeine(underlying.refreshAfterWrite(duration.toJava))
 
-  /**
-    * Specifies a nanosecond-precision time source for use in determining when entries should be
+  /** Specifies a nanosecond-precision time source for use in determining when entries should be
     * expired or refreshed. By default, `java.lang.System.nanoTime` is used.
     *
     * @param ticker a nanosecond-precision time source
@@ -250,8 +234,7 @@ case class Scaffeine[K, V](underlying: caffeine.cache.Caffeine[K, V]) {
   def ticker(ticker: caffeine.cache.Ticker): Scaffeine[K, V] =
     Scaffeine(underlying.ticker(ticker))
 
-  /**
-    * Specifies a listener instance that caches should notify each time an entry is removed for any
+  /** Specifies a listener instance that caches should notify each time an entry is removed for any
     * [[com.github.benmanes.caffeine.cache.RemovalCause]].
     *
     * @param removalListener a listener that caches should notify each time an entry is
@@ -275,8 +258,7 @@ case class Scaffeine[K, V](underlying: caffeine.cache.Caffeine[K, V]) {
       })
     )
 
-  /**
-    * Specifies a writer instance that caches should notify each time an entry is explicitly created
+  /** Specifies a writer instance that caches should notify each time an entry is explicitly created
     * or modified, or removed for any [[com.github.benmanes.caffeine.cache.RemovalCause]].
     * <p>
     * This feature cannot be used in conjunction with [[Scaffeine.weakKeys]] or [[Scaffeine.buildAsync[K1<:K,V1<:V]()*]].
@@ -293,8 +275,7 @@ case class Scaffeine[K, V](underlying: caffeine.cache.Caffeine[K, V]) {
   ): Scaffeine[K1, V1] =
     Scaffeine(underlying.writer(writer))
 
-  /**
-    * Enables the accumulation of [[com.github.benmanes.caffeine.cache.stats.CacheStats]]
+  /** Enables the accumulation of [[com.github.benmanes.caffeine.cache.stats.CacheStats]]
     * during the operation of the cache.
     *
     * @return this builder instance
@@ -302,8 +283,7 @@ case class Scaffeine[K, V](underlying: caffeine.cache.Caffeine[K, V]) {
   def recordStats(): Scaffeine[K, V] =
     Scaffeine(underlying.recordStats())
 
-  /**
-    * Enables the accumulation of [[com.github.benmanes.caffeine.cache.stats.CacheStats]] during
+  /** Enables the accumulation of [[com.github.benmanes.caffeine.cache.stats.CacheStats]] during
     * the operation of the cache.
     *
     * @param statsCounterSupplier a supplier that returns a new
@@ -315,8 +295,7 @@ case class Scaffeine[K, V](underlying: caffeine.cache.Caffeine[K, V]) {
   ): Scaffeine[K, V] =
     Scaffeine(underlying.recordStats(asJavaSupplier(statsCounterSupplier)))
 
-  /**
-    * Specifies the scheduler to use when scheduling routine maintenance based on an expiration
+  /** Specifies the scheduler to use when scheduling routine maintenance based on an expiration
     * event. This augments the periodic maintenance that occurs during normal cache operations to
     * allow for the prompt removal of expired entries regardless of whether any cache activity is
     * occurring at that time. By default the scheduler is disabled.
@@ -327,8 +306,7 @@ case class Scaffeine[K, V](underlying: caffeine.cache.Caffeine[K, V]) {
   def scheduler(scheduler: Scheduler): Scaffeine[K, V] =
     Scaffeine(underlying.scheduler(scheduler))
 
-  /**
-    * Builds a cache which does not automatically load values when keys are requested.
+  /** Builds a cache which does not automatically load values when keys are requested.
     *
     * @tparam K1 the key type of the cache
     * @tparam V1 the value type of the cache
@@ -337,8 +315,7 @@ case class Scaffeine[K, V](underlying: caffeine.cache.Caffeine[K, V]) {
   def build[K1 <: K, V1 <: V](): Cache[K1, V1] =
     Cache(underlying.build())
 
-  /**
-    * Builds a cache, which either returns an already-loaded value for a given key or atomically
+  /** Builds a cache, which either returns an already-loaded value for a given key or atomically
     * computes or retrieves it using the supplied `loader`. If another thread is currently
     * loading the value for this key, simply waits for that thread to finish and returns its loaded
     * value. Note that multiple threads can concurrently load values for distinct keys.
@@ -365,8 +342,7 @@ case class Scaffeine[K, V](underlying: caffeine.cache.Caffeine[K, V]) {
       )
     )
 
-  /**
-    * Builds a cache which does not automatically load values when keys are requested unless a
+  /** Builds a cache which does not automatically load values when keys are requested unless a
     * mapping function is provided. The returned [[scala.concurrent.Future]] may be already loaded or
     * currently computing the value for a given key. If the asynchronous computation fails
     * value then the entry will be automatically removed. Note that multiple
@@ -379,8 +355,7 @@ case class Scaffeine[K, V](underlying: caffeine.cache.Caffeine[K, V]) {
   def buildAsync[K1 <: K, V1 <: V](): AsyncCache[K1, V1] =
     AsyncCache(underlying.buildAsync[K1, V1]())
 
-  /**
-    * Builds a cache, which either returns a [[scala.concurrent.Future]] already loaded or currently
+  /** Builds a cache, which either returns a [[scala.concurrent.Future]] already loaded or currently
     * computing the value for a given key, or atomically computes the value asynchronously through a
     * supplied mapping function or the supplied `loader`. If the asynchronous computation
     * fails then the entry will be automatically removed. Note that multiple threads can
@@ -409,8 +384,7 @@ case class Scaffeine[K, V](underlying: caffeine.cache.Caffeine[K, V]) {
       )
     )
 
-  /**
-    * Builds a cache, which either returns a [[scala.concurrent.Future]] already loaded or currently
+  /** Builds a cache, which either returns a [[scala.concurrent.Future]] already loaded or currently
     * computing the value for a given key, or atomically computes the value asynchronously through a
     * supplied mapping function or the supplied async `loader`. If the asynchronous
     * computation fails then the entry will be automatically removed.
