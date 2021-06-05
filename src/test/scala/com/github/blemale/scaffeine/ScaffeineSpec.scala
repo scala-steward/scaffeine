@@ -182,6 +182,20 @@ class ScaffeineSpec extends AnyWordSpec with Matchers with PrivateMethodTester {
       removalListener shouldNot be(null)
     }
 
+    "set eviction listener" in {
+      val scaffeine =
+        Scaffeine().evictionListener((_: Any, _: Any, _) => println("evicted"))
+
+      val getEvictionListener =
+        PrivateMethod[caffeine.cache.RemovalListener[Any, Any]](
+          'getEvictionListener
+        )
+      val evictionListener =
+        scaffeine.underlying invokePrivate getEvictionListener(false)
+
+      evictionListener shouldNot be(null)
+    }
+
     "set record stats" in {
       val scaffeine = Scaffeine().recordStats()
 
