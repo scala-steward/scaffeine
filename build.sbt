@@ -19,8 +19,8 @@ inThisBuild(
   )
 )
 
-scalaVersion := "2.11.12"
-crossScalaVersions := Seq("2.11.12", "2.12.14", "2.13.6")
+scalaVersion := "2.12.14"
+crossScalaVersions := Seq("2.12.14", "2.13.6")
 
 libraryDependencies ++=
   Seq(
@@ -41,25 +41,6 @@ scalacOptions ++= Seq("-target:jvm-1.8")
 
 scalacOptions ++=
   (CrossVersion.partialVersion(scalaVersion.value) match {
-    case Some((2, 11)) =>
-      Seq(
-        "-deprecation",
-        "-encoding",
-        "UTF-8",
-        "-feature",
-        "-language:existentials",
-        "-language:higherKinds",
-        "-language:implicitConversions",
-        "-unchecked",
-        "-Xfatal-warnings",
-        "-Xlint",
-        "-Yno-adapted-args",
-        "-Ywarn-dead-code",
-        "-Ywarn-numeric-widen",
-        "-Ywarn-value-discard",
-        "-Xfuture",
-        "-Ywarn-unused-import"
-      )
     case Some((2, 12)) =>
       Seq(
         "-deprecation", // Emit warning and location for usages of deprecated APIs.
