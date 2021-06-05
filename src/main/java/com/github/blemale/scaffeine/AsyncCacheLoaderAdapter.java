@@ -30,7 +30,7 @@ class AsyncCacheLoaderAdapter<K, V> implements AsyncCacheLoader<K, V> {
 
   @Nonnull
   @Override
-  public CompletableFuture<V> asyncReload(@Nonnull K key, @Nonnull V oldValue, @Nonnull Executor executor) {
+  public CompletableFuture<? extends V> asyncReload(@Nonnull K key, @Nonnull V oldValue, @Nonnull Executor executor) throws Exception {
     if (reloadLoader.isEmpty()) {
       return AsyncCacheLoader.super.asyncReload(key, oldValue, executor);
     } else {
