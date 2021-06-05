@@ -1,6 +1,6 @@
 [![Build Status](https://img.shields.io/travis/blemale/scaffeine/master?style=flat-square)](https://travis-ci.org/blemale/scaffeine.svg?branch=master)
 [![Coverage Status](https://img.shields.io/coveralls/github/blemale/scaffeine/master?style=flat-square)](https://coveralls.io/github/blemale/scaffeine?branch=master)
-[![Maven Central](https://img.shields.io/maven-central/v/com.github.blemale/scaffeine_2.11?style=flat-square)](https://maven-badges.herokuapp.com/maven-central/com.github.blemale/scaffeine_2.11)
+[![Maven Central](https://img.shields.io/maven-central/v/com.github.blemale/scaffeine_2.12?style=flat-square)](https://maven-badges.herokuapp.com/maven-central/com.github.blemale/scaffeine_2.12)
 [![License](https://img.shields.io/github/license/blemale/scaffeine?style=flat-square)](http://www.apache.org/licenses/LICENSE-2.0.html)
 [![Known Vulnerabilities](https://img.shields.io/snyk/vulnerabilities/github/blemale/scaffeine?style=flat-square)](https://snyk.io/test/github/blemale/scaffeine?targetFile=build.sbt)
 
@@ -8,7 +8,7 @@
 
 A thin Scala wrapper for Caffeine (https://github.com/ben-manes/caffeine).
 
-Browse the [API docs](http://www.javadoc.io/doc/com.github.blemale/scaffeine_2.11) for the latest release.
+Browse the [API docs](http://www.javadoc.io/doc/com.github.blemale/scaffeine_2.12) for the latest release.
 
 ## Motivations
 
@@ -97,7 +97,7 @@ So this is the thinner wrapper we can came with to make Caffeine easy and idioma
 
 ### Download
 
-Download from [Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.blemale/scaffeine_2.11) or depend via SBT:
+Download from [Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.blemale/scaffeine_2.12) or depend via SBT:
 
 ```sbt
 "com.github.blemale" %% "scaffeine" % "<version>" % "compile"
