@@ -258,6 +258,29 @@ case class Scaffeine[K, V](underlying: caffeine.cache.Caffeine[K, V]) {
       })
     )
 
+  /** Specifies a listener instance that caches should notify each time an entry is evicted.
+    *
+    * @param evictionListener a listener that caches should notify each time an entry is
+    *                        being automatically removed due to eviction
+    * @tparam K1 the key type of the listener
+    * @tparam V1 the value type of the listener
+    * @return this builder instance
+    * @throws java.lang.IllegalStateException if a removal listener was already set
+    */
+  def evictionListener[K1 <: K, V1 <: V](
+      evictionListener: (K1, V1, caffeine.cache.RemovalCause) => Unit
+  ): Scaffeine[K1, V1] =
+    Scaffeine(
+      underlying.evictionListener(new caffeine.cache.RemovalListener[K1, V1] {
+
+        override def onRemoval(
+            key: K1,
+            value: V1,
+            cause: caffeine.cache.RemovalCause
+        ): Unit = evictionListener(key, value, cause)
+      })
+    )
+
   /** Specifies a writer instance that caches should notify each time an entry is explicitly created
     * or modified, or removed for any [[com.github.benmanes.caffeine.cache.RemovalCause]].
     * <p>
