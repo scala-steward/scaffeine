@@ -1,18 +1,16 @@
 package com.github.blemale.scaffeine
 
-import java.util.concurrent.Executor
 import com.github.benmanes.caffeine
 import com.github.benmanes.caffeine.cache.Scheduler
 import com.github.benmanes.caffeine.cache.stats.StatsCounter
-import com.github.ghik.silencer.silent
 import org.scalatest.PrivateMethodTester
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
+import java.util.concurrent.Executor
 import scala.concurrent.duration._
 import scala.concurrent.{ExecutionContext, Future}
 
-@silent("deprecated")
 class ScaffeineSpec extends AnyWordSpec with Matchers with PrivateMethodTester {
 
   "Scaffeine" should {
@@ -182,25 +180,6 @@ class ScaffeineSpec extends AnyWordSpec with Matchers with PrivateMethodTester {
         scaffeine.underlying invokePrivate getRemovalListener(false)
 
       removalListener shouldNot be(null)
-    }
-
-    "set cache writer" in {
-      val writer = new caffeine.cache.CacheWriter[Any, Any] {
-        override def write(key: Any, value: Any): Unit = println("write")
-        override def delete(
-            key: Any,
-            value: Any,
-            cause: caffeine.cache.RemovalCause
-        ): Unit = println("delete")
-      }
-
-      val scaffeine = Scaffeine().writer(writer)
-
-      val getCacheWriter =
-        PrivateMethod[caffeine.cache.CacheWriter[Any, Any]]('getCacheWriter)
-      val cacheWriter = scaffeine.underlying invokePrivate getCacheWriter(false)
-
-      cacheWriter should be(writer)
     }
 
     "set record stats" in {

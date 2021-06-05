@@ -3,10 +3,9 @@ package com.github.blemale.scaffeine
 import com.github.benmanes.caffeine
 import com.github.benmanes.caffeine.cache.Scheduler
 import com.github.benmanes.caffeine.cache.stats.StatsCounter
-import com.github.ghik.silencer.silent
 
+import java.util
 import java.util.concurrent.{CompletableFuture, Executor}
-import java.{lang, util}
 import scala.collection.JavaConverters._
 import scala.compat.java8.DurationConverters._
 import scala.compat.java8.FunctionConverters._
@@ -113,7 +112,6 @@ case class Scaffeine[K, V](underlying: caffeine.cache.Caffeine[K, V]) {
   /** Specifies that each key (not value) stored in the cache should be wrapped in a
     * [[java.lang.ref.WeakReference]] (by default, strong references are used).
     * <p>
-    * This feature cannot be used in conjunction with [[Scaffeine.writer]].
     *
     * @return this builder instance
     * @throws java.lang.IllegalStateException if the key strength was already set or the writer was set
@@ -281,25 +279,6 @@ case class Scaffeine[K, V](underlying: caffeine.cache.Caffeine[K, V]) {
       })
     )
 
-  /** Specifies a writer instance that caches should notify each time an entry is explicitly created
-    * or modified, or removed for any [[com.github.benmanes.caffeine.cache.RemovalCause]].
-    * <p>
-    * This feature cannot be used in conjunction with [[Scaffeine.weakKeys]] or [[Scaffeine.buildAsync[K1<:K,V1<:V]()*]].
-    *
-    * @param writer a writer instance that caches should notify each time an entry is explicitly
-    *               created or modified, or removed for any reason
-    * @tparam K1 the key type of the writer
-    * @tparam V1 the value type of the writer
-    * @return this builder instance
-    * @throws java.lang.IllegalStateException if a writer was already set or if the key strength is weak
-    */
-  @deprecated("Scheduled for removal", "scaffeine 4.1.0")
-  @silent("deprecated")
-  def writer[K1 <: K, V1 <: V](
-      writer: caffeine.cache.CacheWriter[K1, V1]
-  ): Scaffeine[K1, V1] =
-    Scaffeine(underlying.writer(writer))
-
   /** Enables the accumulation of [[com.github.benmanes.caffeine.cache.stats.CacheStats]]
     * during the operation of the cache.
     *
@@ -439,15 +418,15 @@ case class Scaffeine[K, V](underlying: caffeine.cache.Caffeine[K, V]) {
 
   private[this] def toCacheLoader[K1 <: K, V1 <: V](
       loader: K1 => V1,
-      allLoader: Option[Iterable[K1] => Map[K1, V1]],
+      allLoader: Option[Set[K1] => Map[K1, V1]],
       reloadLoader: Option[(K1, V1) => V1]
   ): caffeine.cache.CacheLoader[K1, V1] =
     allLoader match {
       case Some(l) =>
         new CacheLoaderAdapter[K1, V1](loader, reloadLoader) {
 
-          override def loadAll(keys: lang.Iterable[_ <: K1]): util.Map[K1, V1] =
-            l(keys.asScala).asJava
+          override def loadAll(keys: util.Set[_ <: K1]): util.Map[K1, V1] =
+            l(keys.asScala.toSet).asJava
         }
       case None =>
         new CacheLoaderAdapter[K1, V1](loader, reloadLoader)
@@ -455,7 +434,7 @@ case class Scaffeine[K, V](underlying: caffeine.cache.Caffeine[K, V]) {
 
   private[this] def toAsyncCacheLoader[K1 <: K, V1 <: V](
       loader: K1 => Future[V1],
-      allLoader: Option[Iterable[K1] => Future[Map[K1, V1]]],
+      allLoader: Option[Set[K1] => Future[Map[K1, V1]]],
       reloadLoader: Option[(K1, V1) => Future[V1]]
   ): caffeine.cache.AsyncCacheLoader[K1, V1] =
     allLoader match {
@@ -463,10 +442,10 @@ case class Scaffeine[K, V](underlying: caffeine.cache.Caffeine[K, V]) {
         new AsyncCacheLoaderAdapter[K1, V1](loader, reloadLoader) {
 
           override def asyncLoadAll(
-              keys: lang.Iterable[_ <: K1],
+              keys: util.Set[_ <: K1],
               executor: Executor
           ): CompletableFuture[util.Map[K1, V1]] =
-            l(keys.asScala)
+            l(keys.asScala.toSet)
               .map(_.asJava)(DirectExecutionContext)
               .toJava
               .toCompletableFuture
