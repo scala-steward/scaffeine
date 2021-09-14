@@ -40,4 +40,5 @@ class AsyncLoadingCacheExample
 
     whenReady(cache.get(1))(value => value should be("foo1"))
   }
+
 }

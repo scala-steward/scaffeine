@@ -161,4 +161,5 @@ class CacheSpec extends AnyWordSpec with Matchers with OptionValues {
       policy.isRecordingStats should be(true)
     }
   }
+
 }

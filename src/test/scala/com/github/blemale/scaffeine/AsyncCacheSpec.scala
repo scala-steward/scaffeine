@@ -86,4 +86,5 @@ class AsyncCacheSpec
       synchronousCache shouldBe a[Cache[_, _]]
     }
   }
+
 }

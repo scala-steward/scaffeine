@@ -22,4 +22,5 @@ class CacheExample extends AnyFlatSpec with Matchers {
     cache.getIfPresent(1) should be(Some("foo"))
     cache.getIfPresent(2) should be(None)
   }
+
 }
