@@ -18,6 +18,7 @@ class RemovalListenerSpec extends AnyWordSpec with Matchers {
     ): Unit = {
       val _ = callCounter.incrementAndGet()
     }
+
   }
 
   "Cache" should {

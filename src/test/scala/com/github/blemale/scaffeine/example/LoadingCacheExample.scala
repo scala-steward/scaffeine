@@ -19,4 +19,5 @@ class LoadingCacheExample extends AnyFlatSpec with Matchers {
 
     cache.get(1) should be("foo1")
   }
+
 }

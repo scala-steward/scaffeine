@@ -56,7 +56,7 @@ class ScaffeineSpec extends AnyWordSpec with Matchers with PrivateMethodTester {
       val scaffeine = Scaffeine().maximumSize(99)
 
       val getMaximumWeight = PrivateMethod[Long](Symbol("getMaximum"))
-      val maximumSize      = scaffeine.underlying invokePrivate getMaximumWeight()
+      val maximumSize = scaffeine.underlying invokePrivate getMaximumWeight()
 
       maximumSize should be(99L)
     }
@@ -66,7 +66,7 @@ class ScaffeineSpec extends AnyWordSpec with Matchers with PrivateMethodTester {
         Scaffeine().maximumWeight(99).weigher((_: Any, _: Any) => 1)
 
       val getMaximumWeight = PrivateMethod[Long](Symbol("getMaximum"))
-      val maximumWeight    = scaffeine.underlying invokePrivate getMaximumWeight()
+      val maximumWeight = scaffeine.underlying invokePrivate getMaximumWeight()
 
       maximumWeight should be(99L)
     }
@@ -201,7 +201,7 @@ class ScaffeineSpec extends AnyWordSpec with Matchers with PrivateMethodTester {
       val scaffeine = Scaffeine().recordStats()
 
       val isRecordingStats = PrivateMethod[Boolean](Symbol("isRecordingStats"))
-      val recordingStats   = scaffeine.underlying invokePrivate isRecordingStats()
+      val recordingStats = scaffeine.underlying invokePrivate isRecordingStats()
 
       recordingStats should be(true)
     }
@@ -211,7 +211,7 @@ class ScaffeineSpec extends AnyWordSpec with Matchers with PrivateMethodTester {
         Scaffeine().recordStats(() => StatsCounter.disabledStatsCounter())
 
       val isRecordingStats = PrivateMethod[Boolean](Symbol("isRecordingStats"))
-      val recordingStats   = scaffeine.underlying invokePrivate isRecordingStats()
+      val recordingStats = scaffeine.underlying invokePrivate isRecordingStats()
 
       recordingStats should be(true)
     }

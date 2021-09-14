@@ -10,4 +10,5 @@ private[scaffeine] object DirectExecutionContext extends ExecutionContext {
       "problem in scaffeine internal callback",
       cause
     )
+
 }
