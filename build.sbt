@@ -25,10 +25,10 @@ crossScalaVersions := Seq("2.12.14", "2.13.6", "3.0.2")
 libraryDependencies ++=
   Seq(
     "com.github.ben-manes.caffeine" % "caffeine" % CaffeineVersion.value,
-    "org.scala-lang.modules"  %% "scala-java8-compat" % "1.0.0",
-    "com.google.code.findbugs" % "jsr305"             % "3.0.2" % "provided",
+    "org.scala-lang.modules"  %% "scala-java8-compat" % "1.0.1",
+    "com.google.code.findbugs" % "jsr305"             % "3.0.2"  % "provided",
     "org.scalactic"           %% "scalactic"          % "3.2.10" % "test",
-    "org.scalatest"           %% "scalatest"          % "3.2.9" % "test"
+    "org.scalatest"           %% "scalatest"          % "3.2.10" % "test"
   )
 
 scalafmtOnCompile := true
