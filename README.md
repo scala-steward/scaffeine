@@ -1,4 +1,4 @@
-[![Build Status](https://img.shields.io/travis/blemale/scaffeine/master?style=flat-square)](https://travis-ci.org/blemale/scaffeine.svg?branch=master)
+[![CI](https://github.com/blemale/scaffeine/actions/workflows/ci.yml/badge.svg)](https://github.com/blemale/scaffeine/actions/workflows/ci.yml)
 [![Coverage Status](https://img.shields.io/coveralls/github/blemale/scaffeine/master?style=flat-square)](https://coveralls.io/github/blemale/scaffeine?branch=master)
 [![scaffeine Scala version support](https://index.scala-lang.org/blemale/scaffeine/scaffeine/latest-by-scala-version.svg?platform=jvm)](https://index.scala-lang.org/blemale/scaffeine/scaffeine)
 [![License](https://img.shields.io/github/license/blemale/scaffeine?style=flat-square)](http://www.apache.org/licenses/LICENSE-2.0.html)
