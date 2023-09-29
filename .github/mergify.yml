@@ -6,3 +6,9 @@ pull_request_rules:
     actions:
       merge:
         method: merge
+  - name: Automatic update of pull requests
+    conditions:
+      - base=main
+      - "#commits-behind>=1"
+    actions:
+      update:
