@@ -8,7 +8,7 @@
 
 A thin Scala wrapper for Caffeine (https://github.com/ben-manes/caffeine).
 
-Browse the [API docs](http://www.javadoc.io/doc/com.github.blemale/scaffeine_2.12) for the latest release.
+Browse the [API docs](https://www.javadoc.io/doc/com.github.blemale/scaffeine_3/latest/com/github/blemale/scaffeine.html) for the latest release.
 
 ## Motivations
 
