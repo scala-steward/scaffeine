@@ -20,7 +20,7 @@ inThisBuild(
 )
 
 scalaVersion       := "2.12.18"
-crossScalaVersions := Seq("2.12.18", "2.13.12", "3.3.1")
+crossScalaVersions := Seq("2.12.18", "2.13.13", "3.3.1")
 
 libraryDependencies ++=
   Seq(
@@ -28,7 +28,7 @@ libraryDependencies ++=
     "org.scala-lang.modules"  %% "scala-java8-compat" % "1.0.2",
     "com.google.code.findbugs" % "jsr305"             % "3.0.2"  % "provided",
     "org.scalactic"           %% "scalactic"          % "3.2.18" % "test",
-    "org.scalatest"           %% "scalatest"          % "3.2.17" % "test"
+    "org.scalatest"           %% "scalatest"          % "3.2.18" % "test"
   )
 
 scalafmtOnCompile := true
