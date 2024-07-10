@@ -18,7 +18,7 @@ class WeigherSpec extends AnyWordSpec with Matchers with OptionValues {
       cache.put("bar", "word2")
       cache.put("baz", "word3")
 
-      cache.getIfPresent("foo") should be(None)
+      cache.estimatedSize() should be(2)
     }
   }
 
