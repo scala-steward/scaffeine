@@ -4,10 +4,10 @@ inThisBuild(
     description  := "Thin Scala wrapper for Caffeine.",
     organization := "com.github.blemale",
     homepage     := Some(url("https://github.com/blemale/scaffeine")),
-    licenses := List(
+    licenses     := List(
       "Apache 2" -> url("http://www.apache.org/licenses/LICENSE-2.0.txt")
     ),
-    startYear := Some(2016),
+    startYear  := Some(2016),
     developers := List(
       Developer(
         "blemale",
