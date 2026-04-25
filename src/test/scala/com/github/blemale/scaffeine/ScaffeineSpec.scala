@@ -37,7 +37,7 @@ class ScaffeineSpec extends AnyWordSpec with Matchers with PrivateMethodTester {
       val scaffeine = Scaffeine().initialCapacity(99)
 
       val getInitialCapacity = PrivateMethod[Int](Symbol("getInitialCapacity"))
-      val initialCapacity =
+      val initialCapacity    =
         scaffeine.underlying invokePrivate getInitialCapacity()
 
       initialCapacity should be(99)

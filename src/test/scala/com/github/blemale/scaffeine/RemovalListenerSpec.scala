@@ -24,7 +24,7 @@ class RemovalListenerSpec extends AnyWordSpec with Matchers {
   "Cache" should {
     "call removal listener on enties eviction" in {
       val listener = new StubListener
-      val cache =
+      val cache    =
         Scaffeine()
           .executor(DirectExecutor)
           .removalListener(listener)

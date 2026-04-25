@@ -4,10 +4,10 @@ inThisBuild(
     description  := "Thin Scala wrapper for Caffeine.",
     organization := "com.github.blemale",
     homepage     := Some(url("https://github.com/blemale/scaffeine")),
-    licenses := List(
+    licenses     := List(
       "Apache 2" -> url("http://www.apache.org/licenses/LICENSE-2.0.txt")
     ),
-    startYear := Some(2016),
+    startYear  := Some(2016),
     developers := List(
       Developer(
         "blemale",
@@ -20,14 +20,14 @@ inThisBuild(
 )
 
 scalaVersion       := "2.12.20"
-crossScalaVersions := Seq("2.12.20", "2.13.15", "3.3.5")
+crossScalaVersions := Seq("2.12.20", "2.13.15", "3.3.7")
 
 libraryDependencies ++=
   Seq(
     "com.github.ben-manes.caffeine" % "caffeine" % CaffeineVersion.value,
     "org.scala-lang.modules"  %% "scala-java8-compat" % "1.0.2",
     "com.google.code.findbugs" % "jsr305"             % "3.0.2"  % "provided",
-    "org.scalactic"           %% "scalactic"          % "3.2.19" % "test",
+    "org.scalactic"           %% "scalactic"          % "3.2.20" % "test",
     "org.scalatest"           %% "scalatest"          % "3.2.19" % "test"
   )
 
