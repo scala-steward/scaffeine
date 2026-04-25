@@ -1,8 +1,8 @@
-addSbtPlugin("org.scoverage" % "sbt-scoverage" % "2.2.2")
+addSbtPlugin("org.scoverage" % "sbt-scoverage" % "2.4.4")
 
 addSbtPlugin("org.scoverage" % "sbt-coveralls" % "1.3.15")
 
-addSbtPlugin("org.scalameta" % "sbt-scalafmt" % "2.5.6")
+addSbtPlugin("org.scalameta" % "sbt-scalafmt" % "2.6.0")
 
 addSbtPlugin("com.timushev.sbt" % "sbt-updates" % "0.6.4")
 
